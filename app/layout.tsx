@@ -1,23 +1,26 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
+import { Toaster } from '@/components/ui/sonner'
+import './globals.css'
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
+const inter = Inter({ subsets: ['latin'], variable: '--font-sans' })
 
 export const metadata: Metadata = {
-  title: "YUDU - Marketplace de Aprendizagem Prática",
-  description:
-    "Conectamos aprendizes, experts e clientes em um marketplace de aprendizagem prática.",
-};
+  title: 'YUDU',
+  description: 'Aprenda Fazendo. Com Experts Reais.',
+}
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
     <html lang="pt-BR">
-      <body className={inter.className}>{children}</body>
+      <body className={`${inter.className} bg-[#F7F8FC]`}>
+        {children}
+        <Toaster />
+      </body>
     </html>
-  );
+  )
 }

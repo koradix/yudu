@@ -1,6 +1,8 @@
 import Link from 'next/link'
-import { Star, Bookmark } from 'lucide-react'
+import { Star } from 'lucide-react'
+import { SkillBadge } from '@/components/skill-badge'
 import { formatPrice } from '@/lib/utils'
+import { OFFER_TYPE_LABELS } from '@/lib/constants'
 
 interface ExpertCardProps {
   id: string
@@ -20,61 +22,72 @@ function getInitials(name: string) {
 }
 
 export function ExpertCard({
-  id, name, headline, avatarUrl, isVerified, ratingAvg, minPrice, skills,
+  id, name, headline, avatarUrl, isVerified, ratingAvg, sessionsCount, minPrice, offerTypes, skills,
 }: ExpertCardProps) {
-  const mainSkill = skills[0]?.name ?? headline.split('·')[0]?.trim() ?? ''
-
   return (
     <Link
       href={`/expert/${id}`}
-      className="group block bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+      className="group block bg-white border border-gray-200 rounded-xl p-4 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
     >
-      {/* Photo */}
-      <div className="relative w-full h-48 bg-gray-100">
-        {avatarUrl ? (
-          <img src={avatarUrl} alt={name} className="w-full h-48 object-cover" />
-        ) : (
-          <div className="w-full h-48 bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center">
-            <span className="text-3xl font-bold text-primary/60">{getInitials(name)}</span>
-          </div>
-        )}
-        {isVerified && (
-          <span className="absolute top-3 left-3 bg-white text-[#2E7D32] text-xs font-semibold px-2 py-0.5 rounded-full border border-[#2E7D32]">
-            VERIFICADO
-          </span>
-        )}
-        <div className="absolute top-3 right-3 bg-white/80 rounded-full p-1.5">
-          <Bookmark className="w-4 h-4 text-gray-500" />
+      {/* Avatar + Name + Headline */}
+      <div className="flex items-center gap-3">
+        <div className="relative shrink-0">
+          {avatarUrl ? (
+            <img src={avatarUrl} alt={name} className="h-12 w-12 rounded-full object-cover" />
+          ) : (
+            <div className="h-12 w-12 rounded-full bg-gray-100 flex items-center justify-center text-sm font-semibold text-[#263238]">
+              {getInitials(name)}
+            </div>
+          )}
+          {isVerified && (
+            <div className="absolute -bottom-0.5 -right-0.5 bg-white rounded-full p-px">
+              <div className="h-4 w-4 rounded-full bg-[#2E7D32] flex items-center justify-center">
+                <svg className="h-2.5 w-2.5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                </svg>
+              </div>
+            </div>
+          )}
+        </div>
+        <div className="min-w-0">
+          <p className="text-sm font-bold text-[#263238] truncate">{name}</p>
+          <p className="text-xs text-gray-500 truncate">{headline}</p>
         </div>
       </div>
 
-      {/* Body */}
-      <div className="p-4 flex flex-col gap-2">
-        {/* Name + Rating */}
-        <div className="flex justify-between items-center">
-          <p className="font-semibold text-[#263238] text-base truncate">{name}</p>
-          <div className="flex items-center gap-1 shrink-0">
-            <Star className="w-4 h-4 fill-[#B07D05] text-[#B07D05]" />
-            <span className="text-sm font-medium text-[#263238]">{ratingAvg.toFixed(1)}</span>
-          </div>
+      {/* Rating + Price */}
+      <div className="mt-3 flex items-center gap-2 text-xs">
+        <div className="flex items-center gap-1">
+          <Star className="h-3.5 w-3.5 fill-[#B07D05] text-[#B07D05]" />
+          <span className="font-bold text-[#B07D05]">{ratingAvg.toFixed(1)}</span>
+          <span className="text-gray-400">({sessionsCount})</span>
         </div>
-
-        {/* Specialty */}
-        <p className="text-sm text-[#2E7D32] font-medium">{mainSkill}</p>
-
-        {/* Description */}
-        <p className="text-sm text-gray-500 line-clamp-2 mt-1">{headline}</p>
-
-        {/* Separator + Price */}
-        <div className="border-t border-gray-100 mt-2 pt-2">
-          <p className="text-xs text-gray-400 uppercase tracking-wide">A partir de</p>
-          <p className="text-base font-bold text-[#263238]">{formatPrice(minPrice)}/h</p>
+        <span className="text-gray-300">|</span>
+        <div className="text-right">
+          <span className="text-gray-400 text-[10px] uppercase tracking-wide">A partir de</span>
+          <span className="font-bold text-sm text-[#263238] ml-1">{formatPrice(minPrice)}</span>
         </div>
+      </div>
 
-        {/* Button */}
-        <button className="mt-2 w-full bg-[#2E7D32] hover:bg-[#1b5e20] text-white text-sm font-semibold py-2 rounded-lg transition">
-          Ver Perfil
-        </button>
+      {/* Offer type pills */}
+      <div className="mt-3 flex flex-wrap gap-1.5">
+        {offerTypes.map((type) => (
+          <span key={type} className="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-gray-600">
+            {OFFER_TYPE_LABELS[type as keyof typeof OFFER_TYPE_LABELS] ?? type}
+          </span>
+        ))}
+      </div>
+
+      {/* Skills */}
+      <div className="mt-2.5 flex flex-wrap gap-1.5">
+        {skills.slice(0, 2).map((skill) => (
+          <SkillBadge key={skill.name} name={skill.name} type={skill.type} />
+        ))}
+      </div>
+
+      {/* Button */}
+      <div className="mt-4 border border-gray-200 rounded-lg py-2 text-center text-xs font-semibold uppercase tracking-wider text-gray-500 group-hover:bg-[#2E7D32] group-hover:text-white group-hover:border-[#2E7D32] transition">
+        Ver Perfil
       </div>
     </Link>
   )

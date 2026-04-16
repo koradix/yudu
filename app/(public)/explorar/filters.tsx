@@ -1,79 +1,123 @@
 'use client'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { Search, ChevronDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { CategoryNav } from '@/components/category-nav'
 
-const offerFilters = [
+const filterChips = [
   { label: 'Todos', value: '' },
-  { label: 'Experiência Prática', value: 'practical_experience' },
+  { label: 'Exp. Prática', value: 'practical_experience' },
   { label: 'Mentoria', value: 'hourly_mentoring' },
   { label: 'Serviço', value: 'service' },
 ]
 
+const worldChips = [
+  { label: 'Todos', value: '' },
+  { label: 'Digital', value: 'digital' },
+  { label: 'Presencial', value: 'physical' },
+]
+
 interface FiltersProps {
   categories: {
-    id: string
-    name: string
-    slug: string
-    type: 'digital' | 'physical'
-    icon_name: string | null
+    id: string; name: string; slug: string; type: 'digital' | 'physical'; icon_name: string | null
   }[]
   activeCategoria: string | null
   activeTipo: string | null
+  activeMundo: string | null
 }
 
-export function ExplorarFilters({ categories, activeCategoria, activeTipo }: FiltersProps) {
+export function ExplorarFilters({ categories, activeCategoria, activeTipo, activeMundo }: FiltersProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
 
   function updateParam(key: string, value: string | null) {
     const params = new URLSearchParams(searchParams.toString())
-    if (value) {
-      params.set(key, value)
-    } else {
-      params.delete(key)
-    }
+    if (value) params.set(key, value)
+    else params.delete(key)
     router.push(`/explorar?${params.toString()}`)
   }
 
+  const filteredCategories = activeMundo
+    ? categories.filter((c) => c.type === activeMundo)
+    : categories
+
   return (
-    <>
-      {/* Filtro por tipo de oferta */}
-      <div className="bg-surface-container-lowest border-b border-outline-variant/20 px-6 py-4">
-        <div className="max-w-7xl mx-auto flex items-center gap-4">
-          <span className="text-[10px] uppercase font-bold tracking-widest text-on-surface-variant shrink-0">Filtrar por:</span>
-          <div className="flex gap-2 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
-            {offerFilters.map((f) => {
-              const active = (activeTipo ?? '') === f.value
+    <div className="sticky top-0 bg-white border-b border-gray-100 z-10 px-4 py-3">
+      <div className="max-w-6xl mx-auto space-y-3">
+        {/* Search + Sort */}
+        <div className="flex items-center gap-3">
+          <div className="relative flex-1 max-w-xs">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <input
+              className="w-full bg-[#F7F8FC] border border-gray-200 rounded-lg pl-9 pr-3 py-2 text-sm outline-none focus:border-[#263238] transition"
+              placeholder="Qual serviço você procura?"
+              type="text"
+            />
+          </div>
+
+          {/* World filter */}
+          <div className="flex gap-2">
+            {worldChips.map((w) => {
+              const active = (activeMundo ?? '') === w.value
               return (
                 <button
-                  key={f.value}
-                  onClick={() => updateParam('tipo', f.value || null)}
+                  key={w.value}
+                  onClick={() => updateParam('mundo', w.value || null)}
                   className={cn(
-                    'whitespace-nowrap rounded-xl px-5 py-2 text-xs font-black font-headline uppercase tracking-wider transition-all duration-300',
+                    'text-sm px-3 py-1.5 rounded-full flex items-center gap-1 transition',
                     active
-                      ? 'bg-primary text-white editorial-shadow'
-                      : 'border border-outline-variant/30 text-on-surface-variant hover:bg-surface-container-low'
+                      ? 'bg-[#263238] text-white border border-[#263238]'
+                      : 'border border-gray-200 text-gray-600 hover:bg-gray-50'
                   )}
                 >
-                  {f.label}
+                  {w.label}
                 </button>
               )
             })}
           </div>
         </div>
-      </div>
 
-      {/* Filtro por categoria */}
-      <div className="bg-surface-container-low px-6 py-4 border-b border-outline-variant/10">
-        <div className="max-w-7xl mx-auto">
-          <CategoryNav
-            categories={categories}
-            selectedSlug={activeCategoria}
-            onSelect={(slug) => updateParam('categoria', slug)}
-          />
+        {/* Type + Category chips */}
+        <div className="flex items-center gap-2 overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
+          {filterChips.map((f) => {
+            const active = (activeTipo ?? '') === f.value
+            return (
+              <button
+                key={f.value}
+                onClick={() => updateParam('tipo', f.value || null)}
+                className={cn(
+                  'whitespace-nowrap text-sm px-3 py-1.5 rounded-full flex items-center gap-1 transition',
+                  active
+                    ? 'bg-[#263238] text-white border border-[#263238]'
+                    : 'border border-gray-200 text-gray-600 hover:bg-gray-50'
+                )}
+              >
+                {f.label}
+                <ChevronDown className="w-3 h-3" />
+              </button>
+            )
+          })}
+
+          <div className="w-px h-6 bg-gray-200 mx-1" />
+
+          {filteredCategories.map((cat) => {
+            const active = activeCategoria === cat.slug
+            return (
+              <button
+                key={cat.id}
+                onClick={() => updateParam('categoria', active ? null : cat.slug)}
+                className={cn(
+                  'whitespace-nowrap text-sm px-3 py-1.5 rounded-full transition',
+                  active
+                    ? 'bg-[#2E7D32] text-white border border-[#2E7D32]'
+                    : 'border border-gray-200 text-gray-600 hover:bg-gray-50'
+                )}
+              >
+                {cat.name}
+              </button>
+            )
+          })}
         </div>
       </div>
-    </>
+    </div>
   )
 }

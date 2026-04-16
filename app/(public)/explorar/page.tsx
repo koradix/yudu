@@ -4,35 +4,29 @@ import { ExpertCard } from '@/components/expert-card'
 import { ExplorarFilters } from './filters'
 
 interface PageProps {
-  searchParams: { categoria?: string; tipo?: string; preco_max?: string }
+  searchParams: { categoria?: string; tipo?: string; mundo?: string }
 }
 
 export default async function ExplorarPage({ searchParams }: PageProps) {
   const supabase = createClient()
   const categoriaSlug = searchParams.categoria ?? null
   const tipoFilter = searchParams.tipo ?? null
+  const mundoFilter = searchParams.mundo ?? null
 
-  // Fetch categories for nav
   const { data: categories } = await supabase
     .from('skill_categories')
     .select('id, name, slug, type, icon_name')
     .order('name')
 
-  // Build expert query
-  let expertQuery = supabase
-    .from('expert_profiles')
-    .select(`
-      id,
-      headline,
-      rating_avg,
-      sessions_count,
-      user_id,
-      profiles!inner(full_name, avatar_url, is_verified)
-    `)
-    .eq('is_active', true)
-    .order('rating_avg', { ascending: false })
+  // Filter by mundo (digital/physical) → get category IDs
+  let categoryIds: string[] | null = null
+  if (mundoFilter) {
+    categoryIds = (categories ?? [])
+      .filter((c) => c.type === mundoFilter)
+      .map((c) => c.id)
+  }
 
-  // If filtering by category, get expert IDs that have skills in that category
+  // Filter by categoria slug → get skill IDs → get expert IDs
   let filteredExpertIds: string[] | null = null
 
   if (categoriaSlug) {
@@ -42,32 +36,50 @@ export default async function ExplorarPage({ searchParams }: PageProps) {
       .eq('skill_categories.slug', categoriaSlug)
 
     const skillIds = (catSkills ?? []).map((s) => s.id)
-
     if (skillIds.length > 0) {
-      const { data: expertSkillRows } = await supabase
+      const { data: rows } = await supabase
         .from('expert_skills')
         .select('expert_id')
         .in('skill_id', skillIds)
+      filteredExpertIds = Array.from(new Set((rows ?? []).map((r) => r.expert_id)))
+    } else {
+      filteredExpertIds = []
+    }
+  } else if (mundoFilter && categoryIds) {
+    // Filter by mundo → get skills in those categories → expert IDs
+    const { data: worldSkills } = await supabase
+      .from('skills')
+      .select('id')
+      .in('category_id', categoryIds)
 
-      filteredExpertIds = Array.from(new Set((expertSkillRows ?? []).map((r) => r.expert_id)))
+    const skillIds = (worldSkills ?? []).map((s) => s.id)
+    if (skillIds.length > 0) {
+      const { data: rows } = await supabase
+        .from('expert_skills')
+        .select('expert_id')
+        .in('skill_id', skillIds)
+      filteredExpertIds = Array.from(new Set((rows ?? []).map((r) => r.expert_id)))
     } else {
       filteredExpertIds = []
     }
   }
 
+  let expertQuery = supabase
+    .from('expert_profiles')
+    .select(`id, headline, rating_avg, sessions_count, user_id, profiles!inner(full_name, avatar_url, is_verified)`)
+    .eq('is_active', true)
+    .order('rating_avg', { ascending: false })
+
   if (filteredExpertIds !== null) {
     if (filteredExpertIds.length === 0) {
-      // No experts match — return empty
-      return renderPage([], categories ?? [], 0, categoriaSlug, tipoFilter)
+      return renderPage([], categories ?? [], 0, categoriaSlug, tipoFilter, mundoFilter)
     }
     expertQuery = expertQuery.in('id', filteredExpertIds)
   }
 
   const { data: expertRows } = await expertQuery
-
   const expertIds = (expertRows ?? []).map((e) => e.id)
 
-  // Fetch offers
   let offersQuery = supabase
     .from('offers')
     .select('expert_id, base_price, offer_type')
@@ -80,13 +92,11 @@ export default async function ExplorarPage({ searchParams }: PageProps) {
 
   const { data: offerRows } = await offersQuery
 
-  // Fetch skills per expert
   const { data: skillRows } = await supabase
     .from('expert_skills')
     .select('expert_id, skills(name, skill_categories(type))')
     .in('expert_id', expertIds)
 
-  // Build expert list — only include experts that have offers matching the filter
   let experts = (expertRows ?? []).map((e) => {
     const profile = e.profiles as any
     const expertOffers = (offerRows ?? []).filter((o) => o.expert_id === e.id)
@@ -100,87 +110,67 @@ export default async function ExplorarPage({ searchParams }: PageProps) {
         name: (s.skills as any)?.name ?? '',
         type: ((s.skills as any)?.skill_categories as any)?.type ?? 'digital',
       }))
-
     return {
-      id: e.id,
-      name: profile.full_name,
-      headline: e.headline ?? '',
-      avatarUrl: profile.avatar_url,
-      isVerified: profile.is_verified ?? false,
-      ratingAvg: Number(e.rating_avg) || 0,
-      sessionsCount: e.sessions_count,
-      minPrice,
-      offerTypes,
-      skills: expertSkills,
-      hasOffers: expertOffers.length > 0,
+      id: e.id, name: profile.full_name, headline: e.headline ?? '',
+      avatarUrl: profile.avatar_url, isVerified: profile.is_verified ?? false,
+      ratingAvg: Number(e.rating_avg) || 0, sessionsCount: e.sessions_count,
+      minPrice, offerTypes, skills: expertSkills, hasOffers: expertOffers.length > 0,
     }
   })
 
-  // If filtering by tipo, only show experts that have matching offers
-  if (tipoFilter) {
-    experts = experts.filter((e) => e.hasOffers)
-  }
+  if (tipoFilter) experts = experts.filter((e) => e.hasOffers)
 
-  return renderPage(experts, categories ?? [], experts.length, categoriaSlug, tipoFilter)
+  return renderPage(experts, categories ?? [], experts.length, categoriaSlug, tipoFilter, mundoFilter)
 }
 
 function renderPage(
-  experts: any[],
-  categories: any[],
-  count: number,
-  categoriaSlug: string | null,
-  tipoFilter: string | null
+  experts: any[], categories: any[], count: number,
+  categoriaSlug: string | null, tipoFilter: string | null, mundoFilter: string | null
 ) {
   return (
-    <div className="min-h-screen bg-surface-container-low">
+    <div className="min-h-screen bg-[#F7F8FC]">
       {/* Header */}
-      <div className="bg-surface-container-lowest border-b border-outline-variant/30 px-6 py-10 transition-all duration-300">
-        <div className="max-w-7xl mx-auto">
-          <h1 className="text-4xl font-black font-headline text-on-surface tracking-tighter italic leading-none mb-2">
-            Mestres e Ofícios
-          </h1>
-          <p className="text-sm text-on-surface-variant font-medium tracking-wide">
-            {count} profissionais encontrados na oficina
+      <div className="bg-white border-b border-gray-100 py-6 px-4">
+        <div className="max-w-6xl mx-auto">
+          <h1 className="text-2xl font-bold text-[#263238]">Descobrir Mestres</h1>
+          <p className="text-sm text-gray-500 mt-1">
+            Conecte-se com profissionais verificados para elevar o nível dos seus projetos.
+            {count > 0 && <span className="font-medium"> {count} encontrados.</span>}
           </p>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto">
-        {/* Filters */}
-        <ExplorarFilters
-          categories={categories}
-          activeCategoria={categoriaSlug}
-          activeTipo={tipoFilter}
-        />
+      {/* Filters */}
+      <ExplorarFilters
+        categories={categories}
+        activeCategoria={categoriaSlug}
+        activeTipo={tipoFilter}
+        activeMundo={mundoFilter}
+      />
 
-        {/* Grid */}
-        <div className="px-6 py-8">
-          {experts.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {experts.map((expert) => (
-                <ExpertCard key={expert.id} {...expert} />
-              ))}
+      {/* Grid */}
+      <div className="max-w-6xl mx-auto px-4 py-8">
+        {experts.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {experts.map((expert) => (
+              <ExpertCard key={expert.id} {...expert} />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-20">
+            <div className="mx-auto h-16 w-16 rounded-full bg-gray-100 flex items-center justify-center mb-4">
+              <span className="material-symbols-outlined text-2xl text-gray-400">person_search</span>
             </div>
-          ) : (
-            <div className="text-center py-24 bg-surface-container-lowest rounded-[3rem] border border-outline-variant/30 editorial-shadow">
-              <div className="mx-auto h-20 w-20 rounded-full bg-primary-fixed flex items-center justify-center mb-6">
-                <span className="material-symbols-outlined text-3xl text-on-primary-fixed">person_search</span>
-              </div>
-              <h3 className="text-xl font-black font-headline text-on-surface tracking-tighter mb-2">
-                Nenhum mestre encontrado
-              </h3>
-              <p className="text-on-surface-variant mb-8 max-w-sm mx-auto">
-                Tente ajustar os filtros ou explorar outras categorias de ofício.
-              </p>
-              <Link
-                href="/explorar"
-                className="inline-flex items-center rounded-xl bg-primary px-8 py-3 text-sm font-black font-headline text-white hover:bg-surface-tint transition editorial-shadow"
-              >
-                Ver todos os mestres
-              </Link>
-            </div>
-          )}
-        </div>
+            <h3 className="text-lg font-semibold text-[#263238] mb-2">Nenhum mestre encontrado</h3>
+            <p className="text-gray-500 text-sm mb-6">Tente ajustar os filtros ou explorar outras categorias.</p>
+            <Link
+              href="/explorar"
+              className="inline-flex items-center border border-gray-200 px-5 py-2 rounded-lg text-sm font-medium text-[#263238] hover:bg-gray-50 transition"
+            >
+              Limpar filtros
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   )

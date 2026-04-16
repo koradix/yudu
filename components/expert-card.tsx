@@ -1,8 +1,6 @@
 import Link from 'next/link'
 import { Star } from 'lucide-react'
-import { SkillBadge } from '@/components/skill-badge'
 import { formatPrice } from '@/lib/utils'
-import { OFFER_TYPE_LABELS } from '@/lib/constants'
 
 interface ExpertCardProps {
   id: string
@@ -22,72 +20,61 @@ function getInitials(name: string) {
 }
 
 export function ExpertCard({
-  id, name, headline, avatarUrl, isVerified, ratingAvg, sessionsCount, minPrice, offerTypes, skills,
+  id, name, headline, avatarUrl, isVerified, ratingAvg, sessionsCount, minPrice, skills,
 }: ExpertCardProps) {
+  const mainSkill = skills[0]?.name ?? headline.split('·')[0]?.trim() ?? ''
+
   return (
     <Link
       href={`/expert/${id}`}
-      className="group block bg-white border border-gray-200 rounded-xl p-4 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5"
+      className="group block rounded-2xl overflow-hidden bg-white shadow-sm hover:shadow-lg transition-all"
     >
-      {/* Avatar + Name + Headline */}
-      <div className="flex items-center gap-3">
-        <div className="relative shrink-0">
-          {avatarUrl ? (
-            <img src={avatarUrl} alt={name} className="h-12 w-12 rounded-full object-cover" />
-          ) : (
-            <div className="h-12 w-12 rounded-full bg-gray-100 flex items-center justify-center text-sm font-semibold text-[#263238]">
-              {getInitials(name)}
-            </div>
-          )}
-          {isVerified && (
-            <div className="absolute -bottom-0.5 -right-0.5 bg-white rounded-full p-px">
-              <div className="h-4 w-4 rounded-full bg-[#2E7D32] flex items-center justify-center">
-                <svg className="h-2.5 w-2.5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                </svg>
-              </div>
-            </div>
-          )}
-        </div>
-        <div className="min-w-0">
-          <p className="text-sm font-bold text-[#263238] truncate">{name}</p>
-          <p className="text-xs text-gray-500 truncate">{headline}</p>
-        </div>
+      {/* Photo */}
+      <div className="relative h-52 w-full bg-gray-100">
+        {avatarUrl ? (
+          <img src={avatarUrl} alt={name} className="w-full h-full object-cover object-top" />
+        ) : (
+          <div className="w-full h-full bg-gradient-to-br from-[#263238]/20 to-[#263238]/5 flex items-center justify-center">
+            <span className="text-4xl font-bold text-[#263238]/30">{getInitials(name)}</span>
+          </div>
+        )}
+        {isVerified && (
+          <span className="absolute top-3 left-3 bg-white text-[#2E7D32] text-xs font-bold px-2.5 py-1 rounded-full border border-[#2E7D32]/30">
+            VERIFICADO
+          </span>
+        )}
+        {minPrice > 0 && (
+          <span className="absolute bottom-3 right-3 bg-black/60 backdrop-blur-sm text-white text-sm font-bold px-3 py-1 rounded-full">
+            A partir de {formatPrice(minPrice)}
+          </span>
+        )}
       </div>
 
-      {/* Rating + Price */}
-      <div className="mt-3 flex items-center gap-2 text-xs">
-        <div className="flex items-center gap-1">
-          <Star className="h-3.5 w-3.5 fill-[#B07D05] text-[#B07D05]" />
+      {/* Body */}
+      <div className="p-4">
+        <p className="font-bold text-[#263238] text-base">{name}</p>
+        <p className="text-sm text-[#2E7D32] font-medium mt-0.5">{mainSkill}</p>
+
+        {/* Rating */}
+        <div className="flex items-center gap-1.5 mt-2 text-sm">
+          <Star className="h-4 w-4 fill-[#B07D05] text-[#B07D05]" />
           <span className="font-bold text-[#B07D05]">{ratingAvg.toFixed(1)}</span>
           <span className="text-gray-400">({sessionsCount})</span>
         </div>
-        <span className="text-gray-300">|</span>
-        <div className="text-right">
-          <span className="text-gray-400 text-[10px] uppercase tracking-wide">A partir de</span>
-          <span className="font-bold text-sm text-[#263238] ml-1">{formatPrice(minPrice)}</span>
+
+        {/* Skills */}
+        <div className="flex flex-wrap gap-1 mt-3">
+          {skills.slice(0, 3).map((skill) => (
+            <span key={skill.name} className="bg-[#F7F8FC] text-[#263238] text-[11px] px-2 py-0.5 rounded-full border border-gray-200">
+              {skill.name}
+            </span>
+          ))}
         </div>
-      </div>
 
-      {/* Offer type pills */}
-      <div className="mt-3 flex flex-wrap gap-1.5">
-        {offerTypes.map((type) => (
-          <span key={type} className="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-gray-600">
-            {OFFER_TYPE_LABELS[type as keyof typeof OFFER_TYPE_LABELS] ?? type}
-          </span>
-        ))}
-      </div>
-
-      {/* Skills */}
-      <div className="mt-2.5 flex flex-wrap gap-1.5">
-        {skills.slice(0, 2).map((skill) => (
-          <SkillBadge key={skill.name} name={skill.name} type={skill.type} />
-        ))}
-      </div>
-
-      {/* Button */}
-      <div className="mt-4 border border-gray-200 rounded-lg py-2 text-center text-xs font-semibold uppercase tracking-wider text-gray-500 group-hover:bg-[#2E7D32] group-hover:text-white group-hover:border-[#2E7D32] transition">
-        Ver Perfil
+        {/* Button */}
+        <div className="mt-4 w-full bg-white border-2 border-[#263238] text-[#263238] font-semibold py-2.5 rounded-xl text-sm uppercase tracking-wide text-center group-hover:bg-[#263238] group-hover:text-white transition">
+          Ver Perfil
+        </div>
       </div>
     </Link>
   )

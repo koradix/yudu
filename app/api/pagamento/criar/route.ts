@@ -91,7 +91,7 @@ export async function POST(request: Request) {
       price_paid: amount,
       location_type: offer.location_type ?? 'remote',
       status: 'scheduled',
-    })
+    } as any)
     .select('id')
     .single()
 

@@ -48,7 +48,7 @@ export default async function ExplorarPage({ searchParams }: PageProps) {
         .select('expert_id')
         .in('skill_id', skillIds)
 
-      filteredExpertIds = [...new Set((expertSkillRows ?? []).map((r) => r.expert_id))]
+      filteredExpertIds = Array.from(new Set((expertSkillRows ?? []).map((r) => r.expert_id)))
     } else {
       filteredExpertIds = []
     }
@@ -92,7 +92,7 @@ export default async function ExplorarPage({ searchParams }: PageProps) {
     const minPrice = expertOffers.length
       ? Math.min(...expertOffers.map((o) => Number(o.base_price)))
       : 0
-    const offerTypes = [...new Set(expertOffers.map((o) => o.offer_type))]
+    const offerTypes = Array.from(new Set(expertOffers.map((o) => o.offer_type)))
     const expertSkills = (skillRows ?? [])
       .filter((s) => s.expert_id === e.id)
       .map((s) => ({

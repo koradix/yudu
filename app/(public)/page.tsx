@@ -47,7 +47,7 @@ export default async function HomePage() {
     const minPrice = expertOffers.length
       ? Math.min(...expertOffers.map((o) => Number(o.base_price)))
       : 0
-    const offerTypes = [...new Set(expertOffers.map((o) => o.offer_type))]
+    const offerTypes = Array.from(new Set(expertOffers.map((o) => o.offer_type)))
     const expertSkills = (skillRows ?? [])
       .filter((s) => s.expert_id === e.id)
       .map((s) => ({

@@ -74,7 +74,7 @@ export default async function ExplorarPage({ searchParams }: PageProps) {
     .eq('is_active', true)
 
   if (tipoFilter) {
-    offersQuery = offersQuery.eq('offer_type', tipoFilter)
+    offersQuery = offersQuery.eq('offer_type', tipoFilter as any)
   }
 
   const { data: offerRows } = await offersQuery

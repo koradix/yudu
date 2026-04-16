@@ -1,9 +1,8 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
 import { Toaster } from '@/components/ui/sonner'
+import TopAppBar from '@/components/top-app-bar'
+import BottomNavBar from '@/components/bottom-nav-bar'
 import './globals.css'
-
-const inter = Inter({ subsets: ['latin'], variable: '--font-sans' })
 
 export const metadata: Metadata = {
   title: 'YUDU',
@@ -17,8 +16,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
-      <body className={`${inter.className} bg-[#F7F8FC]`}>
-        {children}
+      <body className="bg-surface-container-low font-body text-on-surface min-h-[100dvh]">
+        <TopAppBar />
+        <main className="max-w-7xl mx-auto px-6 pt-24 pb-32">
+          {children}
+        </main>
+        <BottomNavBar />
         <Toaster />
       </body>
     </html>

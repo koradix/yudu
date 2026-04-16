@@ -20,7 +20,7 @@ export function DynamicWord() {
 
   return (
     <span
-      className={`inline-block text-[#B07D05] transition-all duration-500 ${
+      className={`inline-block text-primary italic transition-all duration-500 ${
         visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
       }`}
     >

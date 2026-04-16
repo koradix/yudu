@@ -83,40 +83,48 @@ export default async function ExpertProfilePage({ params }: PageProps) {
     : 0
 
   return (
-    <div className="min-h-screen bg-[#F7F8FC]">
-      <div className="max-w-5xl mx-auto px-4 py-6 md:flex md:gap-6">
+    <div className="min-h-screen bg-surface-container-low">
+      <div className="max-w-7xl mx-auto px-6 py-12 md:flex md:gap-12">
         {/* Main column */}
-        <div className="flex-1 space-y-2">
-          {/* SEÇÃO 1 — Header */}
-          <div className="bg-white rounded-xl border border-[#D6DCE8] p-6">
-            <div className="flex items-start gap-4">
+        <div className="flex-1 space-y-8">
+          {/* SEÇÃO 1 — Profile Header Block */}
+          <div className="bg-surface-container-lowest rounded-[3rem] p-8 md:p-12 editorial-shadow bento-card relative overflow-hidden active-theme-transition">
+            <div className="flex flex-col md:flex-row items-center md:items-start gap-8 relative z-10">
               <div className="relative shrink-0">
                 {profile.avatar_url ? (
                   <img
                     src={profile.avatar_url}
                     alt={profile.full_name}
-                    className="h-20 w-20 rounded-full object-cover"
+                    className="h-32 w-32 rounded-full object-cover border-4 border-surface"
                   />
                 ) : (
-                  <div className="h-20 w-20 rounded-full bg-[#EEF1FA] flex items-center justify-center text-xl font-semibold text-[#1A2B6D]">
+                  <div className="h-32 w-32 rounded-full bg-primary-fixed flex items-center justify-center text-3xl font-black font-headline text-on-primary-fixed">
                     {getInitials(profile.full_name)}
                   </div>
                 )}
                 {profile.is_verified && (
-                  <CheckCircle className="absolute -bottom-1 -right-1 h-5 w-5 fill-[#F5A623] stroke-white" />
+                  <div className="absolute bottom-1 right-1 bg-white rounded-full p-1 shadow-md">
+                    <span className="material-symbols-outlined text-primary text-[28px] block" style={{ fontVariationSettings: "'FILL' 1" }}>
+                      verified
+                    </span>
+                  </div>
                 )}
               </div>
-              <div className="min-w-0">
-                <h1 className="text-[22px] font-bold text-[#16213E]">{profile.full_name}</h1>
-                <p className="text-sm text-[#718096] mt-0.5">{expert.headline}</p>
-                <div className="mt-2">
+              <div className="text-center md:text-left min-w-0">
+                <h1 className="text-4xl md:text-5xl font-black font-headline text-on-surface tracking-tighter leading-none mb-2">
+                  {profile.full_name}
+                </h1>
+                <p className="text-lg text-on-surface-variant font-medium tracking-tight mb-4">
+                  {expert.headline}
+                </p>
+                <div className="flex justify-center md:justify-start">
                   <RatingDisplay
                     rating={Number(expert.rating_avg) || 0}
                     count={expert.sessions_count}
                     size="md"
                   />
                 </div>
-                <div className="mt-3 flex flex-wrap gap-1.5">
+                <div className="mt-6 flex flex-wrap gap-2 justify-center md:justify-start">
                   {skills.map((s) => (
                     <SkillBadge key={s.name} name={s.name} type={s.type as 'digital' | 'physical'} />
                   ))}
@@ -125,51 +133,65 @@ export default async function ExpertProfilePage({ params }: PageProps) {
             </div>
           </div>
 
-          {/* SEÇÃO 2 — Sobre */}
+          {/* SEÇÃO 2 — Sobre (Editorial Style) */}
           {expert.bio && (
-            <div className="bg-white rounded-xl border border-[#D6DCE8] p-5">
-              <h2 className="text-base font-bold text-[#16213E] mb-2">Sobre</h2>
-              <p className="text-sm text-[#718096] leading-relaxed">{expert.bio}</p>
+            <div className="bg-surface-container-lowest rounded-[2.5rem] p-8 editorial-shadow">
+              <h2 className="text-2xl font-black font-headline text-on-surface tracking-tighter mb-4 italic">
+                O Legado e o Ofício
+              </h2>
+              <p className="text-base text-on-surface-variant leading-relaxed font-body">
+                {expert.bio}
+              </p>
             </div>
           )}
 
-          {/* SEÇÃO 3 — Ofertas */}
+          {/* SEÇÃO 3 — Ofertas (Bento Grid) */}
           {offers.length > 0 && (
-            <div className="bg-white rounded-xl border border-[#D6DCE8] p-5">
-              <h2 className="text-base font-bold text-[#16213E] mb-4">O que posso oferecer</h2>
-              <div className="space-y-3">
+            <div className="space-y-6">
+              <h2 className="text-2xl font-black font-headline text-on-surface tracking-tighter mb-4 px-4">
+                Programas de Mentoria
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {offers.map((offer) => (
                   <div
                     key={offer.id}
-                    className="border border-[#D6DCE8] rounded-xl p-4"
+                    className="bg-surface-container-lowest rounded-[2rem] p-8 editorial-shadow bento-card border border-outline-variant/10 flex flex-col h-full"
                   >
-                    <span className="inline-flex items-center rounded-md bg-[#EEF1FA] px-2 py-0.5 text-[11px] font-medium text-[#1A2B6D]">
-                      {OFFER_TYPE_LABELS[offer.offer_type as keyof typeof OFFER_TYPE_LABELS] ?? offer.offer_type}
-                    </span>
-                    <h3 className="text-[15px] font-bold text-[#16213E] mt-2">{offer.title}</h3>
+                    <div className="flex justify-between items-start mb-4">
+                      <span className="inline-flex items-center rounded-lg bg-secondary-container px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-on-secondary-container">
+                        {OFFER_TYPE_LABELS[offer.offer_type as keyof typeof OFFER_TYPE_LABELS] ?? offer.offer_type}
+                      </span>
+                      <span className="font-black font-headline text-xl text-primary tracking-tighter">
+                        {formatPrice(Number(offer.base_price))}
+                      </span>
+                    </div>
+                    
+                    <h3 className="text-xl font-black font-headline text-on-surface tracking-tighter mb-2">
+                      {offer.title}
+                    </h3>
+                    
                     {offer.description && (
-                      <p className="text-[13px] text-[#718096] mt-1 line-clamp-2">
+                      <p className="text-sm text-on-surface-variant leading-relaxed flex-1">
                         {offer.description}
                       </p>
                     )}
-                    <div className="flex items-center gap-4 mt-3 text-[13px] text-[#718096]">
-                      <span className="flex items-center gap-1">
-                        <Clock className="h-3.5 w-3.5" />
+
+                    <div className="flex items-center gap-6 mt-6 pb-6 border-b border-outline-variant/20 text-[11px] font-bold uppercase tracking-widest text-on-surface-variant">
+                      <span className="flex items-center gap-2">
+                        <span className="material-symbols-outlined text-sm">schedule</span>
                         {offer.duration_min}min
                       </span>
-                      <span className="flex items-center gap-1">
-                        <MapPin className="h-3.5 w-3.5" />
+                      <span className="flex items-center gap-2">
+                        <span className="material-symbols-outlined text-sm">location_on</span>
                         {locationLabels[offer.location_type ?? 'remote'] ?? offer.location_type}
                       </span>
                     </div>
-                    <p className="text-lg font-bold text-[#16213E] mt-3">
-                      {formatPrice(Number(offer.base_price))}
-                    </p>
+
                     <Link
                       href={`/aprendiz/solicitar/${offer.id}`}
-                      className="mt-3 flex items-center justify-center w-full rounded-lg bg-[#F5A623] py-2.5 text-sm font-bold text-[#16213E] hover:bg-[#e0951c] transition"
+                      className="mt-6 flex items-center justify-center w-full rounded-xl bg-primary py-4 text-xs font-black font-headline uppercase tracking-[0.2em] text-white hover:bg-surface-tint transition-all duration-300 editorial-shadow hover:scale-[1.02]"
                     >
-                      Solicitar →
+                      Solicitar Sessão
                     </Link>
                   </div>
                 ))}
@@ -178,56 +200,62 @@ export default async function ExpertProfilePage({ params }: PageProps) {
           )}
 
           {/* SEÇÃO 4 — Avaliações */}
-          <div className="bg-white rounded-xl border border-[#D6DCE8] p-5">
-            <div className="flex items-center gap-2 mb-4">
-              <h2 className="text-base font-bold text-[#16213E]">Avaliações</h2>
-              <span className="text-sm font-bold text-[#F5A623]">
-                {(Number(expert.rating_avg) || 0).toFixed(1)}
-              </span>
-              <span className="text-xs text-[#718096]">({expert.sessions_count})</span>
+          <div className="bg-surface-container-lowest rounded-[2.5rem] p-8 editorial-shadow">
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="text-2xl font-black font-headline text-on-surface tracking-tighter">Depoimentos Reais</h2>
+              <div className="flex items-center gap-2">
+                <span className="text-xl font-black font-headline text-primary">
+                  {(Number(expert.rating_avg) || 0).toFixed(1)}
+                </span>
+                <span className="text-xs font-bold uppercase tracking-widest text-on-surface-variant">
+                  ({expert.sessions_count} sessões)
+                </span>
+              </div>
             </div>
+
             {reviews.length > 0 ? (
-              <div className="space-y-4">
+              <div className="space-y-8">
                 {reviews.map((review: any) => {
                   const reviewer = review.profiles
                   return (
-                    <div key={review.id} className="border-b border-[#D6DCE8] pb-4 last:border-0 last:pb-0">
-                      <div className="flex items-center gap-2">
+                    <div key={review.id} className="border-b border-outline-variant/10 pb-8 last:border-0 last:pb-0">
+                      <div className="flex items-center gap-4 mb-3">
                         {reviewer?.avatar_url ? (
                           <img
                             src={reviewer.avatar_url}
                             alt=""
-                            className="h-9 w-9 rounded-full object-cover"
+                            className="h-10 w-10 rounded-full object-cover border border-outline-variant/20"
                           />
                         ) : (
-                          <div className="h-9 w-9 rounded-full bg-[#EEF1FA] flex items-center justify-center text-xs font-semibold text-[#1A2B6D]">
+                          <div className="h-10 w-10 rounded-full bg-surface-container-low flex items-center justify-center text-xs font-black font-headline text-on-surface-variant">
                             {getInitials(reviewer?.full_name ?? '?')}
                           </div>
                         )}
                         <div>
-                          <p className="text-[13px] font-bold text-[#16213E]">
+                          <p className="text-sm font-black font-headline text-on-surface tracking-tight leading-none">
                             {reviewer?.full_name}
                           </p>
-                          <p className="text-[11px] text-[#718096]">
+                          <p className="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mt-1">
                             {new Date(review.created_at).toLocaleDateString('pt-BR')}
                           </p>
                         </div>
                       </div>
-                      <div className="flex gap-0.5 mt-2">
-                        {Array.from({ length: 5 }).map((_, i) => (
-                          <Star
-                            key={i}
-                            className={`h-3.5 w-3.5 ${
-                              i < review.rating
-                                ? 'fill-[#F5A623] stroke-[#F5A623]'
-                                : 'fill-gray-200 stroke-gray-200'
-                            }`}
-                          />
+                      
+                      <div className="flex gap-0.5 mb-3">
+                        {[...Array(5)].map((_, i) => (
+                          <span 
+                            key={i} 
+                            className={`material-symbols-outlined text-[16px] ${i < review.rating ? 'text-primary' : 'text-outline-variant'}`}
+                            style={{ fontVariationSettings: i < review.rating ? "'FILL' 1" : "'FILL' 0" }}
+                          >
+                            star
+                          </span>
                         ))}
                       </div>
+
                       {review.comment && (
-                        <p className="text-[13px] text-[#718096] italic mt-2">
-                          {review.comment}
+                        <p className="text-sm text-on-surface-variant font-medium leading-relaxed italic">
+                          "{review.comment}"
                         </p>
                       )}
                     </div>
@@ -235,33 +263,35 @@ export default async function ExpertProfilePage({ params }: PageProps) {
                 })}
               </div>
             ) : (
-              <p className="text-sm text-[#718096]">Ainda não há avaliações.</p>
+              <div className="py-8 text-center bg-surface-container-low rounded-2xl border border-dashed border-outline-variant/30">
+                <p className="text-sm font-bold uppercase tracking-widest text-on-surface-variant">Ainda não há avaliações de oficina.</p>
+              </div>
             )}
           </div>
         </div>
 
         {/* Sidebar — desktop only */}
-        <aside className="hidden md:block md:w-[300px] shrink-0">
-          <div className="sticky top-6 bg-white rounded-xl border border-[#D6DCE8] p-5">
-            <div className="flex items-center gap-3">
+        <aside className="hidden lg:block lg:w-[350px] shrink-0">
+          <div className="sticky top-28 bg-surface-container-lowest rounded-[2.5rem] p-8 editorial-shadow border border-outline-variant/10">
+            <div className="flex items-center gap-4 mb-6">
               {profile.avatar_url ? (
                 <img
                   src={profile.avatar_url}
                   alt={profile.full_name}
-                  className="h-16 w-16 rounded-full object-cover"
+                  className="h-16 w-16 rounded-full object-cover border-2 border-surface"
                 />
               ) : (
-                <div className="h-16 w-16 rounded-full bg-[#EEF1FA] flex items-center justify-center text-lg font-semibold text-[#1A2B6D]">
+                <div className="h-16 w-16 rounded-full bg-primary-fixed flex items-center justify-center text-xl font-black font-headline text-on-primary-fixed">
                   {getInitials(profile.full_name)}
                 </div>
               )}
               <div className="min-w-0">
-                <p className="font-bold text-[#16213E] truncate">{profile.full_name}</p>
-                <p className="text-xs text-[#718096] truncate">{expert.headline}</p>
+                <p className="font-black font-headline text-on-surface tracking-tighter truncate">{profile.full_name}</p>
+                <p className="text-xs font-bold text-on-surface-variant tracking-tight truncate">{expert.headline}</p>
               </div>
             </div>
 
-            <div className="mt-3">
+            <div className="mb-6">
               <RatingDisplay
                 rating={Number(expert.rating_avg) || 0}
                 count={expert.sessions_count}
@@ -269,30 +299,30 @@ export default async function ExpertProfilePage({ params }: PageProps) {
             </div>
 
             {offers.length > 0 && (
-              <div className="mt-4">
-                <p className="text-xs text-[#718096]">a partir de</p>
-                <p className="text-xl font-bold text-[#16213E]">
+              <div className="mb-8">
+                <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1">A partir de</p>
+                <p className="text-3xl font-black font-headline text-primary tracking-tighter leading-none">
                   {formatPrice(minPrice)}
                 </p>
               </div>
             )}
 
-            <hr className="my-4 border-[#D6DCE8]" />
+            <div className="space-y-4">
+              <Link
+                href={offers.length > 0 ? `/aprendiz/solicitar/${offers[0].id}` : '#'}
+                className="flex items-center justify-center w-full rounded-2xl bg-primary py-5 text-sm font-black font-headline uppercase tracking-[0.2em] text-white hover:bg-surface-tint transition-all duration-300 editorial-shadow"
+              >
+                Solicitar Sessão
+              </Link>
 
-            <Link
-              href={offers.length > 0 ? `/aprendiz/solicitar/${offers[0].id}` : '#'}
-              className="flex items-center justify-center w-full rounded-lg bg-[#F5A623] py-3 text-sm font-bold text-[#16213E] hover:bg-[#e0951c] transition"
-            >
-              Solicitar sessão
-            </Link>
-
-            <button className="mt-2 flex items-center justify-center w-full rounded-lg border border-[#16213E] py-2 text-sm font-medium text-[#16213E] hover:bg-[#EEF1FA] transition">
-              Ver disponibilidade
-            </button>
+              <button className="flex items-center justify-center w-full rounded-2xl border-2 border-on-surface/10 py-4 text-xs font-black font-headline uppercase tracking-[0.2em] text-on-surface hover:bg-surface-container-low transition-all duration-300">
+                Ver Disponibilidade
+              </button>
+            </div>
 
             {expert.response_time_hours && (
-              <p className="mt-3 text-xs text-[#718096] text-center flex items-center justify-center gap-1">
-                <Clock className="h-3 w-3" />
+              <p className="mt-8 text-[10px] font-bold uppercase tracking-[0.15em] text-on-surface-variant text-center flex items-center justify-center gap-2">
+                <span className="material-symbols-outlined text-[14px]">bolt</span>
                 Responde em ~{expert.response_time_hours}h
               </p>
             )}

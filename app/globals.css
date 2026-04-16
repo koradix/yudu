@@ -7,15 +7,15 @@
 
 @layer base {
   :root {
-    --background: 0 0% 98.4%; /* #fbf9f9 */
-    --foreground: 180 1.5% 10.6%; /* #1b1c1c */
+    --background: 0 0% 98.4%;
+    --foreground: 180 1.5% 10.6%;
     --card: 0 0% 100%;
     --card-foreground: 180 1.5% 10.6%;
     --popover: 0 0% 100%;
     --popover-foreground: 180 1.5% 10.6%;
-    --primary: 129 77% 22%; /* #0d631b */
+    --primary: 129 77% 22%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 200 17% 36%; /* #4c616c */
+    --secondary: 200 17% 36%;
     --secondary-foreground: 0 0% 100%;
     --muted: 200 17% 96%;
     --muted-foreground: 215 16% 47%;

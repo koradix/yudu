@@ -1,8 +1,8 @@
 import { cn } from '@/lib/utils'
 
 const styles = {
-  digital: 'bg-purple-100 text-purple-700 border-purple-200',
-  physical: 'bg-teal-100 text-teal-700 border-teal-200',
+  digital: 'bg-secondary-fixed text-on-secondary-fixed border-secondary-fixed-dim/20',
+  physical: 'bg-tertiary-fixed text-on-tertiary-fixed border-tertiary-fixed-dim/20',
 }
 
 interface SkillBadgeProps {

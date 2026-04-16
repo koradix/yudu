@@ -39,35 +39,40 @@ export function ExplorarFilters({ categories, activeCategoria, activeTipo }: Fil
   return (
     <>
       {/* Filtro por tipo de oferta */}
-      <div className="bg-white border-b border-[#D6DCE8] px-6 py-3">
-        <div className="flex gap-2 overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
-          {offerFilters.map((f) => {
-            const active = (activeTipo ?? '') === f.value
-            return (
-              <button
-                key={f.value}
-                onClick={() => updateParam('tipo', f.value || null)}
-                className={cn(
-                  'whitespace-nowrap rounded-full px-4 py-1.5 text-sm font-medium transition',
-                  active
-                    ? 'bg-[#16213E] text-white'
-                    : 'border border-[#D6DCE8] text-[#718096] hover:bg-gray-50'
-                )}
-              >
-                {f.label}
-              </button>
-            )
-          })}
+      <div className="bg-surface-container-lowest border-b border-outline-variant/20 px-6 py-4">
+        <div className="max-w-7xl mx-auto flex items-center gap-4">
+          <span className="text-[10px] uppercase font-bold tracking-widest text-on-surface-variant shrink-0">Filtrar por:</span>
+          <div className="flex gap-2 overflow-x-auto pb-1" style={{ scrollbarWidth: 'none' }}>
+            {offerFilters.map((f) => {
+              const active = (activeTipo ?? '') === f.value
+              return (
+                <button
+                  key={f.value}
+                  onClick={() => updateParam('tipo', f.value || null)}
+                  className={cn(
+                    'whitespace-nowrap rounded-xl px-5 py-2 text-xs font-black font-headline uppercase tracking-wider transition-all duration-300',
+                    active
+                      ? 'bg-primary text-white editorial-shadow'
+                      : 'border border-outline-variant/30 text-on-surface-variant hover:bg-surface-container-low'
+                  )}
+                >
+                  {f.label}
+                </button>
+              )
+            })}
+          </div>
         </div>
       </div>
 
       {/* Filtro por categoria */}
-      <div className="bg-[#F7F8FC] px-6 py-4">
-        <CategoryNav
-          categories={categories}
-          selectedSlug={activeCategoria}
-          onSelect={(slug) => updateParam('categoria', slug)}
-        />
+      <div className="bg-surface-container-low px-6 py-4 border-b border-outline-variant/10">
+        <div className="max-w-7xl mx-auto">
+          <CategoryNav
+            categories={categories}
+            selectedSlug={activeCategoria}
+            onSelect={(slug) => updateParam('categoria', slug)}
+          />
+        </div>
       </div>
     </>
   )

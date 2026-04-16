@@ -131,44 +131,55 @@ function renderPage(
   tipoFilter: string | null
 ) {
   return (
-    <div className="min-h-screen bg-[#F7F8FC]">
+    <div className="min-h-screen bg-surface-container-low">
       {/* Header */}
-      <div className="bg-white border-b border-[#D6DCE8] px-6 py-4">
-        <h1 className="text-xl font-bold text-[#16213E]">Encontre um Expert</h1>
-        <p className="text-sm text-[#718096]">{count} experts disponíveis</p>
+      <div className="bg-surface-container-lowest border-b border-outline-variant/30 px-6 py-10 transition-all duration-300">
+        <div className="max-w-7xl mx-auto">
+          <h1 className="text-4xl font-black font-headline text-on-surface tracking-tighter italic leading-none mb-2">
+            Mestres e Ofícios
+          </h1>
+          <p className="text-sm text-on-surface-variant font-medium tracking-wide">
+            {count} profissionais encontrados na oficina
+          </p>
+        </div>
       </div>
 
-      {/* Filters */}
-      <ExplorarFilters
-        categories={categories}
-        activeCategoria={categoriaSlug}
-        activeTipo={tipoFilter}
-      />
+      <div className="max-w-7xl mx-auto">
+        {/* Filters */}
+        <ExplorarFilters
+          categories={categories}
+          activeCategoria={categoriaSlug}
+          activeTipo={tipoFilter}
+        />
 
-      {/* Grid */}
-      <div className="px-6 py-5">
-        {experts.length > 0 ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-            {experts.map((expert) => (
-              <ExpertCard key={expert.id} {...expert} />
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-16">
-            <div className="mx-auto h-16 w-16 rounded-full bg-gray-200 flex items-center justify-center mb-4">
-              <span className="text-2xl">🔍</span>
+        {/* Grid */}
+        <div className="px-6 py-8">
+          {experts.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {experts.map((expert) => (
+                <ExpertCard key={expert.id} {...expert} />
+              ))}
             </div>
-            <p className="text-[#718096] mb-4">
-              Nenhum expert encontrado para essa busca.
-            </p>
-            <a
-              href="/explorar"
-              className="inline-flex items-center rounded-lg border border-[#D6DCE8] px-5 py-2 text-sm font-medium text-[#16213E] hover:bg-[#EEF1FA] transition"
-            >
-              Ver todos
-            </a>
-          </div>
-        )}
+          ) : (
+            <div className="text-center py-24 bg-surface-container-lowest rounded-[3rem] border border-outline-variant/30 editorial-shadow">
+              <div className="mx-auto h-20 w-20 rounded-full bg-primary-fixed flex items-center justify-center mb-6">
+                <span className="material-symbols-outlined text-3xl text-on-primary-fixed">person_search</span>
+              </div>
+              <h3 className="text-xl font-black font-headline text-on-surface tracking-tighter mb-2">
+                Nenhum mestre encontrado
+              </h3>
+              <p className="text-on-surface-variant mb-8 max-w-sm mx-auto">
+                Tente ajustar os filtros ou explorar outras categorias de ofício.
+              </p>
+              <Link
+                href="/explorar"
+                className="inline-flex items-center rounded-xl bg-primary px-8 py-3 text-sm font-black font-headline text-white hover:bg-surface-tint transition editorial-shadow"
+              >
+                Ver todos os mestres
+              </Link>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   )

@@ -34,41 +34,76 @@ export default function EntrarPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F7F8FC] flex items-center justify-center p-4">
-      <div className="bg-white w-full max-w-md rounded-xl shadow-md p-8">
-        <h1 className="text-3xl font-bold text-[#16213E] text-center mb-2">YUDU</h1>
-        <p className="text-center text-gray-500 mb-6 text-sm">Bem-vindo de volta</p>
+    <div className="min-h-[100dvh] bg-surface-container-low flex items-center justify-center p-6">
+      <div className="bg-surface-container-lowest w-full max-w-md rounded-[2.5rem] p-10 md:p-12 editorial-shadow bento-card border border-outline-variant/10">
+        <div className="text-center mb-10">
+          <h1 className="text-4xl font-black font-headline text-primary tracking-tighter italic leading-none mb-3">
+            YUDU
+          </h1>
+          <p className="text-sm font-bold uppercase tracking-widest text-on-surface-variant font-label">
+            Oficina de Aprendizado
+          </p>
+        </div>
 
         {resetSent ? (
-          <div className="text-center text-green-700 bg-green-50 rounded-lg p-4">
-            Enviamos um link de redefinição para seu e-mail.
+          <div className="text-center text-primary bg-primary-fixed/30 rounded-2xl p-6 editorial-shadow font-medium animate-in fade-in zoom-in duration-500">
+            <span className="material-symbols-outlined text-4xl mb-4 block">mail</span>
+            <p>Enviamos um link de redefinição <br /> para seu e-mail.</p>
           </div>
         ) : (
-          <form onSubmit={onSubmit} className="flex flex-col gap-4">
-            <div>
-              <Label>E-mail</Label>
-              <Input type="email" value={email}
+          <form onSubmit={onSubmit} className="flex flex-col gap-6">
+            <div className="space-y-2">
+              <Label className="text-xs font-bold uppercase tracking-widest text-on-surface-variant ml-1">E-mail</Label>
+              <Input 
+                type="email" 
+                value={email}
                 onChange={e => setEmail(e.target.value)}
-                placeholder="seu@email.com" className="mt-1" />
+                placeholder="seu@oficio.com" 
+                className="bg-surface-container-low border-none rounded-2xl p-6 h-14"
+              />
             </div>
-            <div>
-              <Label>Senha</Label>
-              <Input type="password" value={password}
+            
+            <div className="space-y-2">
+              <div className="flex justify-between items-center ml-1">
+                <Label className="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Senha</Label>
+                <button type="button" onClick={handleReset}
+                  className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant/60 hover:text-primary transition-colors">
+                  Esqueci a senha
+                </button>
+              </div>
+              <Input 
+                type="password" 
+                value={password}
                 onChange={e => setPassword(e.target.value)}
-                placeholder="Sua senha" className="mt-1" />
+                placeholder="Sua chave de acesso" 
+                className="bg-surface-container-low border-none rounded-2xl p-6 h-14"
+              />
             </div>
-            <button type="button" onClick={handleReset}
-              className="text-sm text-gray-400 hover:text-gray-600 text-right -mt-2">
-              Esqueci minha senha
+
+            {erro && (
+              <p className="text-error text-xs font-bold text-center bg-error-container/20 py-2 rounded-lg border border-error/10">
+                {erro}
+              </p>
+            )}
+
+            <button 
+              type="submit" 
+              disabled={loading}
+              className="w-full bg-primary hover:bg-surface-tint text-white h-14 rounded-2xl font-black font-headline uppercase tracking-[0.2em] transition-all duration-300 editorial-shadow hover:scale-[1.02] flex items-center justify-center gap-2"
+            >
+              {loading ? (
+                <span className="animate-pulse">Acessando...</span>
+              ) : (
+                <>
+                  Entrar na Oficina
+                  <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                </>
+              )}
             </button>
-            {erro && <p className="text-red-500 text-sm text-center">{erro}</p>}
-            <Button type="submit" disabled={loading}
-              className="w-full bg-[#16213E] hover:bg-[#1A2B6D] text-white font-semibold">
-              {loading ? 'Entrando...' : 'Entrar'}
-            </Button>
-            <p className="text-center text-sm text-gray-500">
-              Não tem conta?{' '}
-              <a href="/cadastrar" className="text-[#16213E] font-semibold hover:underline">Cadastrar</a>
+
+            <p className="text-center text-xs font-medium text-on-surface-variant mt-4">
+              Ainda não tem conta?{' '}
+              <a href="/cadastrar" className="text-primary font-black font-headline hover:underline ml-1">Cadastrar</a>
             </p>
           </form>
         )}

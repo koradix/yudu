@@ -17,16 +17,16 @@ export default async function AprendizInicioPage() {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-2xl font-bold text-[#16213E]">
+      <h1 className="text-2xl font-bold text-on-surface">
         Olá, {nome}! 👋
       </h1>
-      <p className="text-gray-500 mt-1">Pronto para aprender algo novo hoje?</p>
+      <p className="text-on-surface-variant mt-1">Pronto para aprender algo novo hoje?</p>
 
-      <div className="mt-6 bg-white rounded-xl border border-[#D6DCE8] p-6">
-        <p className="text-gray-600">Explore experts e comece sua primeira sessão</p>
+      <div className="mt-6 bg-white rounded-xl border border-outline-variant/30 p-6">
+        <p className="text-on-surface-variant">Explore experts e comece sua primeira sessão</p>
         <Link
-          href="/aprendiz/explorar"
-          className="mt-4 inline-flex items-center justify-center rounded-lg bg-[#F5A623] px-5 py-2.5 text-sm font-semibold text-[#16213E] hover:bg-[#e0951c] transition"
+          href="/explorar"
+          className="mt-4 inline-flex items-center justify-center rounded-lg bg-primary px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary-container transition"
         >
           Explorar Experts
         </Link>

@@ -49,7 +49,7 @@ export function PropostasContent({ requests }: { requests: PropostaItem[] }) {
       price_paid: req.proposedPrice,
       location_type: req.locationType,
       status: 'scheduled',
-    })
+    } as any)
 
     setLoading(null)
     router.push('/expert/sessoes')

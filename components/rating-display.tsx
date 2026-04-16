@@ -12,13 +12,13 @@ export function RatingDisplay({ rating, count, size = 'sm' }: RatingDisplayProps
     <div className="flex items-center gap-1">
       <Star
         className={cn(
-          'fill-[#F5A623] stroke-[#F5A623]',
+          'fill-[#B07D05] stroke-[#B07D05]',
           size === 'sm' ? 'h-3.5 w-3.5' : 'h-4 w-4'
         )}
       />
       <span
         className={cn(
-          'font-bold text-[#F5A623]',
+          'font-bold text-[#B07D05]',
           size === 'sm' ? 'text-xs' : 'text-sm'
         )}
       >

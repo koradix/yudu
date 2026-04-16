@@ -127,7 +127,7 @@ export function PagarClient({
           {expertAvatar ? (
             <img src={expertAvatar} alt="" className="h-12 w-12 rounded-full object-cover" />
           ) : (
-            <div className="h-12 w-12 rounded-full bg-[#EEF1FA] flex items-center justify-center text-sm font-semibold text-[#263238]">
+            <div className="h-12 w-12 rounded-full bg-[#F7F8FC] flex items-center justify-center text-sm font-semibold text-[#263238]">
               {getInitials(expertName)}
             </div>
           )}
@@ -156,7 +156,7 @@ export function PagarClient({
               </span>
             </div>
           )}
-          <hr className="border-[#D6DCE8]" />
+          <hr className="border-[#e5e7eb]" />
           <div className="flex justify-between">
             <span className="text-[#718096]">Subtotal</span>
             <span className="text-[#263238]">{formatPrice(amount)}</span>
@@ -219,7 +219,7 @@ export function PagarClient({
                   <img
                     src={`data:image/png;base64,${qrCodeBase64}`}
                     alt="QR Code Pix"
-                    className="w-48 h-48 rounded-lg border border-[#D6DCE8]"
+                    className="w-48 h-48 rounded-lg border border-[#e5e7eb]"
                   />
                 </div>
               )}
@@ -233,11 +233,11 @@ export function PagarClient({
                       readOnly
                       value={qrCode}
                       rows={3}
-                      className="w-full rounded-lg border border-[#D6DCE8] px-3 py-2 text-xs font-mono pr-12"
+                      className="w-full rounded-lg border border-[#e5e7eb] px-3 py-2 text-xs font-mono pr-12"
                     />
                     <button
                       onClick={handleCopy}
-                      className="absolute top-2 right-2 p-1.5 rounded bg-[#EEF1FA] hover:bg-gray-200 transition"
+                      className="absolute top-2 right-2 p-1.5 rounded bg-[#F7F8FC] hover:bg-gray-200 transition"
                     >
                       {copied ? (
                         <CheckCircle className="h-4 w-4 text-[#2E7D32]" />

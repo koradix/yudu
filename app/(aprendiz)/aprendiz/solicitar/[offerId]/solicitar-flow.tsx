@@ -114,34 +114,34 @@ export function SolicitarFlow({
   return (
     <>
       {step === 1 && (
-        <div className="bg-white rounded-xl border border-[#D6DCE8] p-6">
+        <div className="bg-white rounded-xl border border-[#e5e7eb] p-6">
           {/* Expert info */}
           <div className="flex items-center gap-3 mb-4">
             {expertAvatarUrl ? (
               <img src={expertAvatarUrl} alt="" className="h-12 w-12 rounded-full object-cover" />
             ) : (
-              <div className="h-12 w-12 rounded-full bg-[#EEF1FA] flex items-center justify-center text-sm font-semibold text-[#1A2B6D]">
+              <div className="h-12 w-12 rounded-full bg-[#F7F8FC] flex items-center justify-center text-sm font-semibold text-[#263238]">
                 {getInitials(expertName)}
               </div>
             )}
             <div>
-              <p className="font-bold text-[#16213E] text-sm">{expertName}</p>
+              <p className="font-bold text-[#263238] text-sm">{expertName}</p>
               <p className="text-xs text-[#718096]">{expertHeadline}</p>
             </div>
           </div>
 
-          <span className="inline-flex items-center rounded-md bg-[#EEF1FA] px-2 py-0.5 text-[11px] font-medium text-[#1A2B6D]">
+          <span className="inline-flex items-center rounded-md bg-[#F7F8FC] px-2 py-0.5 text-[11px] font-medium text-[#263238]">
             {OFFER_TYPE_LABELS[offerType as keyof typeof OFFER_TYPE_LABELS] ?? offerType}
           </span>
 
-          <h2 className="text-lg font-bold text-[#16213E] mt-2">{title}</h2>
+          <h2 className="text-lg font-bold text-[#263238] mt-2">{title}</h2>
 
           <div className="flex items-center gap-4 mt-3 text-sm text-[#718096]">
             <span className="flex items-center gap-1"><Clock className="h-4 w-4" />{durationMin}min</span>
             <span className="flex items-center gap-1"><MapPin className="h-4 w-4" />{locationLabels[locationType] ?? locationType}</span>
           </div>
 
-          <p className="text-2xl font-bold text-[#16213E] mt-4">{formatPrice(basePrice)}</p>
+          <p className="text-2xl font-bold text-[#263238] mt-4">{formatPrice(basePrice)}</p>
 
           {/* Proposta de preço */}
           <div className="mt-6 space-y-3">
@@ -151,9 +151,9 @@ export function SolicitarFlow({
                 name="price"
                 checked={priceOption === 'base'}
                 onChange={() => { setPriceOption('base'); setErro('') }}
-                className="accent-[#16213E]"
+                className="accent-[#263238]"
               />
-              <span className="text-sm text-[#16213E]">Aceitar preço base ({formatPrice(basePrice)})</span>
+              <span className="text-sm text-[#263238]">Aceitar preço base ({formatPrice(basePrice)})</span>
             </label>
             <label className="flex items-center gap-2 cursor-pointer">
               <input
@@ -161,9 +161,9 @@ export function SolicitarFlow({
                 name="price"
                 checked={priceOption === 'custom'}
                 onChange={() => setPriceOption('custom')}
-                className="accent-[#16213E]"
+                className="accent-[#263238]"
               />
-              <span className="text-sm text-[#16213E]">Propor outro valor</span>
+              <span className="text-sm text-[#263238]">Propor outro valor</span>
             </label>
             {priceOption === 'custom' && (
               <Input
@@ -186,7 +186,7 @@ export function SolicitarFlow({
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               placeholder="Ex: Gostaria de aprender sobre..."
-              className="mt-1 w-full rounded-lg border border-[#D6DCE8] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#16213E]/20"
+              className="mt-1 w-full rounded-lg border border-[#e5e7eb] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#263238]/20"
             />
           </div>
 
@@ -194,7 +194,7 @@ export function SolicitarFlow({
 
           <Button
             onClick={() => validateStep1() && setStep(2)}
-            className="mt-4 w-full bg-[#F5A623] hover:bg-[#e0951c] text-[#16213E] font-semibold"
+            className="mt-4 w-full bg-[#2E7D32] hover:bg-[#1b5e20] text-white font-semibold"
           >
             Continuar →
           </Button>
@@ -202,8 +202,8 @@ export function SolicitarFlow({
       )}
 
       {step === 2 && (
-        <div className="bg-white rounded-xl border border-[#D6DCE8] p-6">
-          <h2 className="text-lg font-bold text-[#16213E] mb-4">Quando você quer a sessão?</h2>
+        <div className="bg-white rounded-xl border border-[#e5e7eb] p-6">
+          <h2 className="text-lg font-bold text-[#263238] mb-4">Quando você quer a sessão?</h2>
 
           <div className="space-y-4">
             <div>
@@ -243,7 +243,7 @@ export function SolicitarFlow({
             </Button>
             <Button
               onClick={() => validateStep2() && setStep(3)}
-              className="flex-1 bg-[#F5A623] hover:bg-[#e0951c] text-[#16213E] font-semibold"
+              className="flex-1 bg-[#2E7D32] hover:bg-[#1b5e20] text-white font-semibold"
             >
               Confirmar →
             </Button>
@@ -252,37 +252,37 @@ export function SolicitarFlow({
       )}
 
       {step === 3 && (
-        <div className="bg-white rounded-xl border border-[#D6DCE8] p-6">
-          <h2 className="text-lg font-bold text-[#16213E] mb-4">Revisão da solicitação</h2>
+        <div className="bg-white rounded-xl border border-[#e5e7eb] p-6">
+          <h2 className="text-lg font-bold text-[#263238] mb-4">Revisão da solicitação</h2>
 
           <div className="space-y-3 text-sm">
             <div className="flex justify-between">
               <span className="text-[#718096]">Expert</span>
-              <span className="font-medium text-[#16213E]">{expertName}</span>
+              <span className="font-medium text-[#263238]">{expertName}</span>
             </div>
             <div className="flex justify-between">
               <span className="text-[#718096]">Tipo</span>
-              <span className="font-medium text-[#16213E]">
+              <span className="font-medium text-[#263238]">
                 {OFFER_TYPE_LABELS[offerType as keyof typeof OFFER_TYPE_LABELS] ?? offerType}
               </span>
             </div>
             <div className="flex justify-between">
               <span className="text-[#718096]">Data</span>
-              <span className="font-medium text-[#16213E]">
+              <span className="font-medium text-[#263238]">
                 {date ? new Date(date + 'T00:00:00').toLocaleDateString('pt-BR') : ''} às {time}
               </span>
             </div>
-            <hr className="border-[#D6DCE8]" />
+            <hr className="border-[#e5e7eb]" />
             <div className="flex justify-between">
               <span className="text-[#718096]">Valor a pagar</span>
-              <span className="text-2xl font-bold text-[#16213E]">{formatPrice(finalPrice)}</span>
+              <span className="text-2xl font-bold text-[#263238]">{formatPrice(finalPrice)}</span>
             </div>
             <p className="text-[13px] text-green-700">Expert recebe {formatPrice(expertPayout)}</p>
             <p className="text-xs text-[#718096]">Taxa YUDU: {formatPrice(platformFee)}</p>
           </div>
 
-          <div className="mt-4 border border-[#F5A623] bg-amber-50 rounded-lg p-3">
-            <p className="text-xs text-[#16213E]">
+          <div className="mt-4 border border-[#2E7D32] bg-amber-50 rounded-lg p-3">
+            <p className="text-xs text-[#263238]">
               Após confirmar, você receberá instruções de pagamento via Pix.
             </p>
           </div>
@@ -300,7 +300,7 @@ export function SolicitarFlow({
             <Button
               onClick={handleConfirm}
               disabled={loading}
-              className="flex-1 bg-[#F5A623] hover:bg-[#e0951c] text-[#16213E] font-semibold"
+              className="flex-1 bg-[#2E7D32] hover:bg-[#1b5e20] text-white font-semibold"
             >
               {loading ? 'Enviando...' : 'Confirmar e Pagar'}
             </Button>

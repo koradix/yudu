@@ -50,14 +50,14 @@ export function FinanceiroClient({ totalReceived, totalPending, totalSessions, p
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm p-6 border-l-4 border-[#16213E]">
+        <div className="bg-white rounded-xl shadow-sm p-6 border-l-4 border-[#263238]">
           <div className="flex items-center gap-3">
-            <div className="h-10 w-10 rounded-full bg-[#EEF1FA] flex items-center justify-center">
-              <Calendar className="h-5 w-5 text-[#16213E]" />
+            <div className="h-10 w-10 rounded-full bg-[#F7F8FC] flex items-center justify-center">
+              <Calendar className="h-5 w-5 text-[#263238]" />
             </div>
             <div>
               <p className="text-xs text-[#718096]">Total Sessões</p>
-              <p className="text-xl font-bold text-[#16213E]">{totalSessions}</p>
+              <p className="text-xl font-bold text-[#263238]">{totalSessions}</p>
             </div>
           </div>
         </div>
@@ -65,8 +65,8 @@ export function FinanceiroClient({ totalReceived, totalPending, totalSessions, p
 
       {/* Payments table */}
       <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-        <div className="px-6 py-4 border-b border-[#D6DCE8]">
-          <h3 className="font-bold text-[#16213E]">Histórico de Pagamentos</h3>
+        <div className="px-6 py-4 border-b border-[#e5e7eb]">
+          <h3 className="font-bold text-[#263238]">Histórico de Pagamentos</h3>
         </div>
 
         {payments.length === 0 ? (
@@ -77,7 +77,7 @@ export function FinanceiroClient({ totalReceived, totalPending, totalSessions, p
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="border-b border-[#D6DCE8] bg-[#F7F8FC]">
+                <tr className="border-b border-[#e5e7eb] bg-[#F7F8FC]">
                   <th className="text-left text-xs font-medium text-[#718096] px-6 py-3">Data</th>
                   <th className="text-left text-xs font-medium text-[#718096] px-6 py-3">Aprendiz/Cliente</th>
                   <th className="text-right text-xs font-medium text-[#718096] px-6 py-3">Bruto</th>
@@ -90,14 +90,14 @@ export function FinanceiroClient({ totalReceived, totalPending, totalSessions, p
                 {payments.map((p) => {
                   const cfg = statusConfig[p.status] ?? statusConfig.pending
                   return (
-                    <tr key={p.id} className="border-b border-[#D6DCE8] last:border-0">
-                      <td className="px-6 py-3 text-sm text-[#16213E]">
+                    <tr key={p.id} className="border-b border-[#e5e7eb] last:border-0">
+                      <td className="px-6 py-3 text-sm text-[#263238]">
                         {new Date(p.createdAt).toLocaleDateString('pt-BR')}
                       </td>
-                      <td className="px-6 py-3 text-sm text-[#16213E]">{p.payerName}</td>
-                      <td className="px-6 py-3 text-sm text-right text-[#16213E]">{formatPrice(p.amount)}</td>
+                      <td className="px-6 py-3 text-sm text-[#263238]">{p.payerName}</td>
+                      <td className="px-6 py-3 text-sm text-right text-[#263238]">{formatPrice(p.amount)}</td>
                       <td className="px-6 py-3 text-sm text-right text-[#718096]">{formatPrice(p.platformFee)}</td>
-                      <td className="px-6 py-3 text-sm text-right font-bold text-[#16213E]">{formatPrice(p.expertPayout)}</td>
+                      <td className="px-6 py-3 text-sm text-right font-bold text-[#263238]">{formatPrice(p.expertPayout)}</td>
                       <td className="px-6 py-3 text-center">
                         <span className={cn('inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-medium', cfg.bg, cfg.text)}>
                           {cfg.label}

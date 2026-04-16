@@ -90,7 +90,7 @@ export function PropostasContent({ requests }: { requests: PropostaItem[] }) {
     <>
       <div className="space-y-3">
         {requests.map((r) => (
-          <div key={r.id} className="bg-white border border-[#D6DCE8] rounded-xl p-4">
+          <div key={r.id} className="bg-white border border-[#e5e7eb] rounded-xl p-4">
             <span className="inline-flex items-center rounded-full bg-amber-100 text-amber-700 px-2.5 py-0.5 text-[11px] font-medium mb-2">
               {r.status === 'pending' ? 'Nova' : 'Pendente'}
             </span>
@@ -99,12 +99,12 @@ export function PropostasContent({ requests }: { requests: PropostaItem[] }) {
               {r.requesterAvatar ? (
                 <img src={r.requesterAvatar} alt="" className="h-10 w-10 rounded-full object-cover" />
               ) : (
-                <div className="h-10 w-10 rounded-full bg-[#EEF1FA] flex items-center justify-center text-xs font-semibold text-[#1A2B6D]">
+                <div className="h-10 w-10 rounded-full bg-[#F7F8FC] flex items-center justify-center text-xs font-semibold text-[#263238]">
                   {getInitials(r.requesterName)}
                 </div>
               )}
               <div>
-                <p className="font-bold text-sm text-[#16213E]">{r.requesterName}</p>
+                <p className="font-bold text-sm text-[#263238]">{r.requesterName}</p>
                 <p className="text-xs text-[#718096]">
                   {OFFER_TYPE_LABELS[r.offerType as keyof typeof OFFER_TYPE_LABELS] ?? r.offerType} — {r.offerTitle}
                 </p>
@@ -117,10 +117,10 @@ export function PropostasContent({ requests }: { requests: PropostaItem[] }) {
               {new Date(r.proposedDate).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })}
             </div>
 
-            <p className="text-lg font-bold text-[#16213E] mt-2">{formatPrice(r.proposedPrice)}</p>
+            <p className="text-lg font-bold text-[#263238] mt-2">{formatPrice(r.proposedPrice)}</p>
 
             {r.message && (
-              <p className="text-[13px] text-[#718096] italic mt-2 border-l-2 border-[#D6DCE8] pl-3">
+              <p className="text-[13px] text-[#718096] italic mt-2 border-l-2 border-[#e5e7eb] pl-3">
                 {r.message}
               </p>
             )}
@@ -148,7 +148,7 @@ export function PropostasContent({ requests }: { requests: PropostaItem[] }) {
                 variant="outline"
                 disabled={loading === r.id}
                 onClick={() => { setCounterModal(r.id); setCounterValue('') }}
-                className="border-[#16213E] text-[#16213E] hover:bg-[#EEF1FA] rounded-lg px-4"
+                className="border-[#263238] text-[#263238] hover:bg-[#F7F8FC] rounded-lg px-4"
               >
                 Contraproposta
               </Button>
@@ -161,7 +161,7 @@ export function PropostasContent({ requests }: { requests: PropostaItem[] }) {
       {counterModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-xl p-6 w-full max-w-sm">
-            <h3 className="font-bold text-[#16213E] text-lg mb-4">Contraproposta</h3>
+            <h3 className="font-bold text-[#263238] text-lg mb-4">Contraproposta</h3>
             <p className="text-sm text-[#718096] mb-3">Informe o valor que deseja propor:</p>
             <Input
               type="number"
@@ -177,7 +177,7 @@ export function PropostasContent({ requests }: { requests: PropostaItem[] }) {
               <Button
                 disabled={loading === counterModal}
                 onClick={() => handleCounter(counterModal)}
-                className="flex-1 bg-[#16213E] hover:bg-[#1A2B6D] text-white font-semibold"
+                className="flex-1 bg-[#263238] hover:bg-[#263238] text-white font-semibold"
               >
                 Enviar
               </Button>

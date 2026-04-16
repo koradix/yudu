@@ -32,7 +32,7 @@ function getInitials(name: string) {
 function Avatar({ url, name, size = 40 }: { url: string | null; name: string; size?: number }) {
   if (url) return <img src={url} alt="" className="rounded-full object-cover" style={{ width: size, height: size }} />
   return (
-    <div className="rounded-full bg-[#EEF1FA] flex items-center justify-center text-xs font-semibold text-[#1A2B6D]" style={{ width: size, height: size }}>
+    <div className="rounded-full bg-[#F7F8FC] flex items-center justify-center text-xs font-semibold text-[#263238]" style={{ width: size, height: size }}>
       {getInitials(name)}
     </div>
   )
@@ -89,7 +89,7 @@ export function SessoesContent({ sessions, requests, userId }: {
   return (
     <>
       {/* Tabs */}
-      <div className="flex gap-1 border-b border-[#D6DCE8] mb-4">
+      <div className="flex gap-1 border-b border-[#e5e7eb] mb-4">
         {tabs.map((t) => (
           <button
             key={t}
@@ -97,13 +97,13 @@ export function SessoesContent({ sessions, requests, userId }: {
             className={cn(
               'px-4 py-2 text-sm font-medium border-b-2 transition',
               tab === t
-                ? 'border-[#16213E] text-[#16213E]'
-                : 'border-transparent text-[#718096] hover:text-[#16213E]'
+                ? 'border-[#263238] text-[#263238]'
+                : 'border-transparent text-[#718096] hover:text-[#263238]'
             )}
           >
             {t}
             {t === 'Propostas' && requests.length > 0 && (
-              <span className="ml-1.5 inline-flex h-5 w-5 items-center justify-center rounded-full bg-[#F5A623] text-[10px] font-bold text-[#16213E]">
+              <span className="ml-1.5 inline-flex h-5 w-5 items-center justify-center rounded-full bg-[#B07D05] text-[10px] font-bold text-[#263238]">
                 {requests.length}
               </span>
             )}
@@ -116,14 +116,14 @@ export function SessoesContent({ sessions, requests, userId }: {
         <div className="space-y-3">
           {scheduled.length === 0 && <p className="text-sm text-[#718096]">Nenhuma sessão agendada.</p>}
           {scheduled.map((s) => (
-            <div key={s.id} className="bg-white border border-[#D6DCE8] rounded-xl p-4">
+            <div key={s.id} className="bg-white border border-[#e5e7eb] rounded-xl p-4">
               <span className="inline-flex items-center rounded-full bg-green-100 text-green-700 px-2.5 py-0.5 text-[11px] font-medium mb-2">
                 Confirmada
               </span>
               <div className="flex items-center gap-3">
                 <Avatar url={s.expertAvatar} name={s.expertName} />
                 <div>
-                  <p className="font-bold text-sm text-[#16213E]">{s.expertName}</p>
+                  <p className="font-bold text-sm text-[#263238]">{s.expertName}</p>
                   <p className="text-xs text-[#718096]">{s.offerTitle}</p>
                 </div>
               </div>
@@ -149,7 +149,7 @@ export function SessoesContent({ sessions, requests, userId }: {
         <div className="space-y-3">
           {requests.length === 0 && <p className="text-sm text-[#718096]">Nenhuma proposta pendente.</p>}
           {requests.map((r) => (
-            <div key={r.id} className="bg-white border-2 border-[#F5A623] rounded-xl p-4">
+            <div key={r.id} className="bg-white border-2 border-[#2E7D32] rounded-xl p-4">
               <span className={cn(
                 'inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-medium mb-2',
                 r.status === 'counter_proposed'
@@ -161,7 +161,7 @@ export function SessoesContent({ sessions, requests, userId }: {
               <div className="flex items-center gap-3">
                 <Avatar url={r.expertAvatar} name={r.expertName} />
                 <div>
-                  <p className="font-bold text-sm text-[#16213E]">{r.expertName}</p>
+                  <p className="font-bold text-sm text-[#263238]">{r.expertName}</p>
                   <p className="text-xs text-[#718096]">{r.offerTitle}</p>
                 </div>
               </div>
@@ -169,7 +169,7 @@ export function SessoesContent({ sessions, requests, userId }: {
                 <Calendar className="h-3.5 w-3.5" />
                 {new Date(r.proposedDate).toLocaleDateString('pt-BR')}
               </div>
-              <p className="text-lg font-bold text-[#16213E] mt-2">{formatPrice(r.proposedPrice)}</p>
+              <p className="text-lg font-bold text-[#263238] mt-2">{formatPrice(r.proposedPrice)}</p>
               {r.status === 'counter_proposed' && r.counterPrice && (
                 <div className="mt-2">
                   <p className="text-sm text-orange-700 font-medium">
@@ -206,7 +206,7 @@ export function SessoesContent({ sessions, requests, userId }: {
         <div className="space-y-3">
           {history.length === 0 && <p className="text-sm text-[#718096]">Nenhuma sessão no histórico.</p>}
           {history.map((s) => (
-            <div key={s.id} className="bg-white border border-[#D6DCE8] rounded-xl p-4">
+            <div key={s.id} className="bg-white border border-[#e5e7eb] rounded-xl p-4">
               <span className={cn(
                 'inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-medium mb-2',
                 s.status === 'completed' ? 'bg-gray-100 text-gray-600' : 'bg-red-100 text-red-600'
@@ -216,7 +216,7 @@ export function SessoesContent({ sessions, requests, userId }: {
               <div className="flex items-center gap-3">
                 <Avatar url={s.expertAvatar} name={s.expertName} />
                 <div>
-                  <p className="font-bold text-sm text-[#16213E]">{s.expertName}</p>
+                  <p className="font-bold text-sm text-[#263238]">{s.expertName}</p>
                   <p className="text-xs text-[#718096]">{s.offerTitle}</p>
                 </div>
               </div>
@@ -227,7 +227,7 @@ export function SessoesContent({ sessions, requests, userId }: {
                 <Button
                   size="sm"
                   onClick={() => setReviewModal(s.id)}
-                  className="mt-3 bg-[#F5A623] hover:bg-[#e0951c] text-[#16213E] font-semibold"
+                  className="mt-3 bg-[#2E7D32] hover:bg-[#1b5e20] text-[#263238] font-semibold"
                 >
                   Avaliar
                 </Button>
@@ -241,13 +241,13 @@ export function SessoesContent({ sessions, requests, userId }: {
       {reviewModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-xl p-6 w-full max-w-sm">
-            <h3 className="font-bold text-[#16213E] text-lg mb-4">Avaliar sessão</h3>
+            <h3 className="font-bold text-[#263238] text-lg mb-4">Avaliar sessão</h3>
             <div className="flex gap-1 mb-4">
               {[1, 2, 3, 4, 5].map((n) => (
                 <button key={n} onClick={() => setReviewRating(n)}>
                   <Star className={cn(
                     'h-7 w-7',
-                    n <= reviewRating ? 'fill-[#F5A623] stroke-[#F5A623]' : 'fill-gray-200 stroke-gray-200'
+                    n <= reviewRating ? 'fill-[#2E7D32] stroke-[#2E7D32]' : 'fill-gray-200 stroke-gray-200'
                   )} />
                 </button>
               ))}
@@ -257,7 +257,7 @@ export function SessoesContent({ sessions, requests, userId }: {
               value={reviewComment}
               onChange={(e) => setReviewComment(e.target.value)}
               placeholder="Deixe um comentário (opcional)"
-              className="w-full rounded-lg border border-[#D6DCE8] px-3 py-2 text-sm"
+              className="w-full rounded-lg border border-[#e5e7eb] px-3 py-2 text-sm"
             />
             <div className="flex gap-2 mt-4">
               <Button variant="outline" onClick={() => setReviewModal(null)} className="flex-1">
@@ -266,7 +266,7 @@ export function SessoesContent({ sessions, requests, userId }: {
               <Button
                 disabled={submitting}
                 onClick={() => submitReview(reviewModal)}
-                className="flex-1 bg-[#F5A623] hover:bg-[#e0951c] text-[#16213E] font-semibold"
+                className="flex-1 bg-[#2E7D32] hover:bg-[#1b5e20] text-[#263238] font-semibold"
               >
                 {submitting ? 'Enviando...' : 'Enviar'}
               </Button>

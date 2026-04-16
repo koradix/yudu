@@ -53,7 +53,7 @@ export default async function SessoesPage() {
 
   return (
     <div>
-      <h1 className="text-xl font-bold text-[#16213E] mb-4">Minhas Sessões</h1>
+      <h1 className="text-xl font-bold text-[#263238] mb-4">Minhas Sessões</h1>
       <SessoesContent
         sessions={(sessions ?? []).map((s: any) => ({
           id: s.id,

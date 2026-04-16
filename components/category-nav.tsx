@@ -59,7 +59,7 @@ export function CategoryNav({ categories, selectedSlug, onSelect, activeColor }:
         onClick={() => onSelect(null)}
         className={cn(
           'flex flex-col items-center gap-2 min-w-[72px] p-2 rounded-lg cursor-pointer transition',
-          !selectedSlug ? 'bg-[#EEF1FA]' : 'hover:bg-[#EEF1FA]'
+          !selectedSlug ? 'bg-[#F7F8FC]' : 'hover:bg-[#F7F8FC]'
         )}
       >
         <div
@@ -85,7 +85,7 @@ export function CategoryNav({ categories, selectedSlug, onSelect, activeColor }:
             onClick={() => onSelect(cat.slug)}
             className={cn(
               'flex flex-col items-center gap-2 min-w-[72px] p-2 rounded-lg cursor-pointer transition',
-              active ? 'bg-[#EEF1FA]' : 'hover:bg-[#EEF1FA]'
+              active ? 'bg-[#F7F8FC]' : 'hover:bg-[#F7F8FC]'
             )}
           >
             <div

@@ -24,7 +24,7 @@ export default async function DisponibilidadePage() {
 
   return (
     <div>
-      <h1 className="text-xl font-bold text-[#16213E] mb-4">Disponibilidade</h1>
+      <h1 className="text-xl font-bold text-[#263238] mb-4">Disponibilidade</h1>
       <DisponibilidadeClient
         expertId={expertProfile.id}
         initialSlots={(slots ?? []).map((s) => ({

@@ -44,9 +44,9 @@ export default async function PropostasPage() {
   return (
     <div>
       <div className="flex items-center gap-3 mb-4">
-        <h1 className="text-xl font-bold text-[#16213E]">Propostas Recebidas</h1>
+        <h1 className="text-xl font-bold text-[#263238]">Propostas Recebidas</h1>
         {pendingCount > 0 && (
-          <span className="inline-flex h-6 min-w-[24px] items-center justify-center rounded-full bg-[#F5A623] px-2 text-xs font-bold text-[#16213E]">
+          <span className="inline-flex h-6 min-w-[24px] items-center justify-center rounded-full bg-[#2E7D32] px-2 text-xs font-bold text-[#263238]">
             {pendingCount}
           </span>
         )}

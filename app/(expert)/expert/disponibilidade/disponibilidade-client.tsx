@@ -89,7 +89,7 @@ export function DisponibilidadeClient({ expertId, initialSlots }: {
             <tr>
               <th className="w-16 text-xs text-[#718096] font-medium text-left py-2" />
               {DAYS.map((d, i) => (
-                <th key={i} className="text-xs font-medium text-[#16213E] text-center py-2 px-1">
+                <th key={i} className="text-xs font-medium text-[#263238] text-center py-2 px-1">
                   {d}
                 </th>
               ))}
@@ -128,7 +128,7 @@ export function DisponibilidadeClient({ expertId, initialSlots }: {
         <Button
           onClick={save}
           disabled={saving}
-          className="bg-[#F5A623] hover:bg-[#e0951c] text-[#16213E] font-semibold"
+          className="bg-[#2E7D32] hover:bg-[#1b5e20] text-[#263238] font-semibold"
         >
           {saving ? 'Salvando...' : 'Salvar disponibilidade'}
         </Button>

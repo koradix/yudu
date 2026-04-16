@@ -65,7 +65,7 @@ export default async function FinanceiroPage() {
 
   return (
     <div>
-      <h1 className="text-xl font-bold text-[#16213E] mb-4">Financeiro</h1>
+      <h1 className="text-xl font-bold text-[#263238] mb-4">Financeiro</h1>
       <FinanceiroClient
         totalReceived={totalReceived}
         totalPending={totalPending}

@@ -119,7 +119,7 @@ export default function AprendizPerfilPage() {
       )}
 
       <form onSubmit={form.handleSubmit(onSubmit)} className="bg-white rounded-xl shadow-sm p-6 space-y-4">
-        <h2 className="font-bold text-[#16213E] text-lg">Meu Perfil</h2>
+        <h2 className="font-bold text-[#263238] text-lg">Meu Perfil</h2>
         <div>
           <Label>Nome completo</Label>
           <Input {...form.register('full_name')} className="mt-1" />
@@ -136,14 +136,14 @@ export default function AprendizPerfilPage() {
           <textarea
             {...form.register('bio')}
             rows={3}
-            className="mt-1 w-full rounded-lg border border-[#D6DCE8] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#16213E]/20"
+            className="mt-1 w-full rounded-lg border border-[#e5e7eb] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#263238]/20"
             placeholder="Conte um pouco sobre você..."
           />
         </div>
         <Button
           type="submit"
           disabled={form.formState.isSubmitting}
-          className="bg-[#F5A623] hover:bg-[#e0951c] text-[#16213E] font-semibold"
+          className="bg-[#2E7D32] hover:bg-[#1b5e20] text-[#263238] font-semibold"
         >
           {form.formState.isSubmitting ? 'Salvando...' : 'Salvar perfil'}
         </Button>
@@ -151,16 +151,16 @@ export default function AprendizPerfilPage() {
 
       {/* Habilidades aprendidas */}
       <div className="bg-white rounded-xl shadow-sm p-6 mt-4">
-        <h2 className="font-bold text-[#16213E] text-lg mb-3">Minhas Habilidades Aprendidas</h2>
+        <h2 className="font-bold text-[#263238] text-lg mb-3">Minhas Habilidades Aprendidas</h2>
         {skills.length === 0 ? (
           <p className="text-sm text-[#718096]">Você ainda não completou sessões de aprendizado.</p>
         ) : (
           <div className="space-y-3">
             {skills.map((s, i) => (
-              <div key={i} className="flex items-center justify-between border-b border-[#D6DCE8] pb-2 last:border-0 last:pb-0">
+              <div key={i} className="flex items-center justify-between border-b border-[#e5e7eb] pb-2 last:border-0 last:pb-0">
                 <SkillBadge name={s.skillName} type={s.skillType as 'digital' | 'physical'} size="md" />
                 <div className="text-right">
-                  <p className="text-sm font-medium text-[#16213E]">{s.totalHours}h registradas</p>
+                  <p className="text-sm font-medium text-[#263238]">{s.totalHours}h registradas</p>
                   <p className="text-xs text-[#718096]">{s.sessionsCount} sessões</p>
                 </div>
               </div>

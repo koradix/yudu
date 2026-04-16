@@ -175,14 +175,14 @@ export function ExpertPerfilClient({
       )}
 
       {/* Tabs */}
-      <div className="flex gap-1 border-b border-[#D6DCE8] mb-6">
+      <div className="flex gap-1 border-b border-[#e5e7eb] mb-6">
         {tabs.map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
             className={cn(
               'px-4 py-2 text-sm font-medium border-b-2 transition',
-              tab === t ? 'border-[#16213E] text-[#16213E]' : 'border-transparent text-[#718096] hover:text-[#16213E]'
+              tab === t ? 'border-[#263238] text-[#263238]' : 'border-transparent text-[#718096] hover:text-[#263238]'
             )}
           >
             {t}
@@ -209,7 +209,7 @@ export function ExpertPerfilClient({
             <textarea
               {...profileForm.register('bio')}
               rows={4}
-              className="mt-1 w-full rounded-lg border border-[#D6DCE8] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#16213E]/20"
+              className="mt-1 w-full rounded-lg border border-[#e5e7eb] px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#263238]/20"
               placeholder="Fale sobre sua experiência..."
             />
           </div>
@@ -224,7 +224,7 @@ export function ExpertPerfilClient({
           <Button
             type="submit"
             disabled={profileForm.formState.isSubmitting}
-            className="bg-[#F5A623] hover:bg-[#e0951c] text-[#16213E] font-semibold"
+            className="bg-[#2E7D32] hover:bg-[#1b5e20] text-[#263238] font-semibold"
           >
             {profileForm.formState.isSubmitting ? 'Salvando...' : 'Salvar perfil'}
           </Button>
@@ -236,7 +236,7 @@ export function ExpertPerfilClient({
         <div>
           <Button
             onClick={() => setShowOfferModal(true)}
-            className="mb-4 bg-[#16213E] hover:bg-[#1A2B6D] text-white font-semibold"
+            className="mb-4 bg-[#263238] hover:bg-[#263238] text-white font-semibold"
           >
             + Nova Offer
           </Button>
@@ -248,7 +248,7 @@ export function ExpertPerfilClient({
               <div key={o.id} className="bg-white rounded-xl shadow-sm p-4 flex items-start justify-between gap-4">
                 <div className="min-w-0">
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="inline-flex items-center rounded-md bg-[#EEF1FA] px-2 py-0.5 text-[11px] font-medium text-[#1A2B6D]">
+                    <span className="inline-flex items-center rounded-md bg-[#F7F8FC] px-2 py-0.5 text-[11px] font-medium text-[#263238]">
                       {OFFER_TYPE_LABELS[o.offerType as keyof typeof OFFER_TYPE_LABELS] ?? o.offerType}
                     </span>
                     <span className={cn(
@@ -258,9 +258,9 @@ export function ExpertPerfilClient({
                       {o.isActive ? 'Ativa' : 'Pausada'}
                     </span>
                   </div>
-                  <p className="font-bold text-sm text-[#16213E]">{o.title}</p>
+                  <p className="font-bold text-sm text-[#263238]">{o.title}</p>
                   {o.description && <p className="text-xs text-[#718096] mt-0.5 line-clamp-1">{o.description}</p>}
-                  <p className="text-sm font-bold text-[#16213E] mt-1">{formatPrice(o.basePrice)}</p>
+                  <p className="text-sm font-bold text-[#263238] mt-1">{formatPrice(o.basePrice)}</p>
                 </div>
                 <Button
                   size="sm"
@@ -279,13 +279,13 @@ export function ExpertPerfilClient({
           {showOfferModal && (
             <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
               <div className="bg-white rounded-xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
-                <h3 className="font-bold text-[#16213E] text-lg mb-4">Nova Offer</h3>
+                <h3 className="font-bold text-[#263238] text-lg mb-4">Nova Offer</h3>
                 <form onSubmit={offerForm.handleSubmit(createOffer)} className="space-y-4">
                   <div>
                     <Label>Tipo</Label>
                     <select
                       {...offerForm.register('offer_type')}
-                      className="mt-1 w-full rounded-lg border border-[#D6DCE8] px-3 py-2 text-sm"
+                      className="mt-1 w-full rounded-lg border border-[#e5e7eb] px-3 py-2 text-sm"
                     >
                       <option value="practical_experience">Experiência Prática</option>
                       <option value="hourly_mentoring">Mentoria por Hora</option>
@@ -302,7 +302,7 @@ export function ExpertPerfilClient({
                     <textarea
                       {...offerForm.register('description')}
                       rows={3}
-                      className="mt-1 w-full rounded-lg border border-[#D6DCE8] px-3 py-2 text-sm"
+                      className="mt-1 w-full rounded-lg border border-[#e5e7eb] px-3 py-2 text-sm"
                     />
                   </div>
                   <div className="grid grid-cols-2 gap-3">
@@ -318,7 +318,7 @@ export function ExpertPerfilClient({
                   </div>
                   <div className="flex gap-2">
                     <Button type="button" variant="outline" onClick={() => setShowOfferModal(false)} className="flex-1">Cancelar</Button>
-                    <Button type="submit" disabled={offerForm.formState.isSubmitting} className="flex-1 bg-[#F5A623] hover:bg-[#e0951c] text-[#16213E] font-semibold">
+                    <Button type="submit" disabled={offerForm.formState.isSubmitting} className="flex-1 bg-[#2E7D32] hover:bg-[#1b5e20] text-[#263238] font-semibold">
                       {offerForm.formState.isSubmitting ? 'Salvando...' : 'Criar Offer'}
                     </Button>
                   </div>
@@ -333,11 +333,11 @@ export function ExpertPerfilClient({
       {tab === 'Habilidades' && (
         <div className="max-w-lg">
           <div className="bg-white rounded-xl shadow-sm p-6">
-            <h3 className="font-bold text-[#16213E] mb-3">Minhas Habilidades</h3>
+            <h3 className="font-bold text-[#263238] mb-3">Minhas Habilidades</h3>
             {skills.length === 0 && <p className="text-sm text-[#718096] mb-3">Nenhuma habilidade adicionada.</p>}
             <div className="flex flex-wrap gap-2 mb-4">
               {skills.map((s) => (
-                <span key={s.id} className="inline-flex items-center gap-1.5 rounded-full border border-[#D6DCE8] bg-white px-3 py-1 text-xs font-medium text-[#16213E]">
+                <span key={s.id} className="inline-flex items-center gap-1.5 rounded-full border border-[#e5e7eb] bg-white px-3 py-1 text-xs font-medium text-[#263238]">
                   <SkillBadge name={s.skillName} type={s.skillType as 'digital' | 'physical'} size="sm" />
                   <button onClick={() => removeSkill(s.id)} className="text-red-400 hover:text-red-600 ml-1">×</button>
                 </span>
@@ -353,12 +353,12 @@ export function ExpertPerfilClient({
                 className="mt-1"
               />
               {skillSearch.length >= 2 && filteredSkills.length > 0 && (
-                <div className="absolute left-0 right-0 top-full mt-1 bg-white border border-[#D6DCE8] rounded-lg shadow-lg z-10 max-h-40 overflow-y-auto">
+                <div className="absolute left-0 right-0 top-full mt-1 bg-white border border-[#e5e7eb] rounded-lg shadow-lg z-10 max-h-40 overflow-y-auto">
                   {filteredSkills.slice(0, 8).map((s) => (
                     <button
                       key={s.id}
                       onClick={() => addSkill(s)}
-                      className="w-full text-left px-3 py-2 text-sm hover:bg-[#EEF1FA] flex items-center gap-2"
+                      className="w-full text-left px-3 py-2 text-sm hover:bg-[#F7F8FC] flex items-center gap-2"
                     >
                       {s.name}
                       <span className={cn(

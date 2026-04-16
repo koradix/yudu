@@ -5,7 +5,6 @@ import { createClient } from '@/lib/supabase/client'
 import { Calendar, MapPin, Star } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn, formatPrice } from '@/lib/utils'
-import { OFFER_TYPE_LABELS } from '@/lib/constants'
 
 const locationLabels: Record<string, string> = {
   remote: 'Remoto', in_person: 'Presencial', hybrid: 'Híbrido',

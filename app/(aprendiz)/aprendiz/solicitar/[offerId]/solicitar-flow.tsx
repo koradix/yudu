@@ -38,7 +38,6 @@ export function SolicitarFlow({
   title,
   offerType,
   basePrice,
-  minPrice,
   durationMin,
   locationType,
   expertName,

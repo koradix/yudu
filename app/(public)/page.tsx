@@ -3,7 +3,6 @@ import { GraduationCap, Briefcase, Building2 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { ExpertCard } from '@/components/expert-card'
 import { HomeCategoryNav } from './category-nav-wrapper'
-import { formatPrice } from '@/lib/utils'
 
 export default async function HomePage() {
   const supabase = createClient()

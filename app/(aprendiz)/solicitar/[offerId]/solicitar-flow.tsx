@@ -93,23 +93,23 @@ export function SolicitarFlow({
 
     const proposedDate = new Date(`${date}T${time}:00`)
 
-    const { error } = await supabase.from('session_requests').insert({
+    const { data: request, error } = await supabase.from('session_requests').insert({
       offer_id: offerId,
       requester_id: userId,
       proposed_price: finalPrice,
       message: message || null,
       proposed_date: proposedDate.toISOString(),
       status: 'pending',
-    })
+    }).select('id').single()
 
     setLoading(false)
 
-    if (error) {
+    if (error || !request) {
       setErro('Erro ao enviar solicitação. Tente novamente.')
       return
     }
 
-    router.push('/aprendiz/sessoes?novo=true')
+    router.push(`/aprendiz/pagar/${request.id}`)
   }
 
   return (
@@ -303,7 +303,7 @@ export function SolicitarFlow({
               disabled={loading}
               className="flex-1 bg-[#F5A623] hover:bg-[#e0951c] text-[#16213E] font-semibold"
             >
-              {loading ? 'Enviando...' : 'Confirmar solicitação'}
+              {loading ? 'Enviando...' : 'Confirmar e Pagar'}
             </Button>
           </div>
         </div>

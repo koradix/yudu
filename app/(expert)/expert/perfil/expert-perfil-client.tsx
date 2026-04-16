@@ -45,8 +45,8 @@ const offerSchema = z.object({
   offer_type: z.enum(['practical_experience', 'hourly_mentoring', 'service']),
   title: z.string().min(2, 'Obrigatório'),
   description: z.string().optional(),
-  base_price: z.coerce.number().positive('Preço obrigatório'),
-  duration_min: z.coerce.number().int().min(15, 'Mínimo 15 min'),
+  base_price: z.number().positive('Preço obrigatório'),
+  duration_min: z.number().int().min(15, 'Mínimo 15 min'),
 })
 
 type ProfileForm = z.infer<typeof profileSchema>

@@ -1,8 +1,9 @@
 import Link from 'next/link'
-import { GraduationCap, Briefcase, Building2 } from 'lucide-react'
+import { GraduationCap, Briefcase, Building2, Users, ShieldCheck } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { ExpertCard } from '@/components/expert-card'
 import { HomeCategoryNav } from './category-nav-wrapper'
+import HeroSearch from '@/components/hero-search'
 
 export default async function HomePage() {
   const supabase = createClient()
@@ -71,30 +72,51 @@ export default async function HomePage() {
   return (
     <div className="min-h-screen">
       {/* SEÇÃO 1 — Hero */}
-      <section className="bg-gradient-to-br from-[#16213E] to-[#1A2B6D] px-6 py-16 md:py-24">
-        <div className="max-w-5xl mx-auto">
-          <h1 className="text-4xl md:text-5xl font-bold text-white">
-            Aprenda Fazendo.
+      <section className="bg-gradient-to-b from-[#263238] via-[#37474f] to-[#263238] py-20 md:py-28 px-6 flex items-center justify-center text-center">
+        <div className="max-w-4xl mx-auto w-full">
+          {/* HEADLINE */}
+          <h1 className="text-4xl md:text-6xl font-bold text-white leading-tight">
+            Aprenda na <span className="text-[#B07D05]">prática</span> com quem já faz
           </h1>
-          <h2 className="text-4xl md:text-5xl font-bold text-[#F5A623] mt-1">
-            Com Experts Reais.
-          </h2>
-          <p className="text-white/80 text-base md:text-lg mt-4 max-w-md">
-            Conectamos aprendizes a experts que ensinam na prática.
+
+          {/* SUBHEADLINE */}
+          <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mt-4">
+            Conectamos você a mentores reais em campo — aprenda instalando, construindo e resolvendo ao lado de profissionais verificados.
           </p>
-          <div className="flex flex-wrap gap-3 mt-8">
+
+          {/* SEARCH BAR */}
+          <HeroSearch />
+
+          {/* SECONDARY CTAs */}
+          <div className="mt-6 flex flex-wrap gap-4 justify-center items-center">
             <Link
-              href="/cadastrar"
-              className="inline-flex items-center justify-center rounded-lg bg-[#F5A623] px-6 py-3 text-sm font-bold text-[#16213E] hover:bg-[#e0951c] transition"
+              href="/explorar"
+              className="border border-white text-white hover:bg-white hover:text-[#263238] px-6 py-2 rounded-xl transition font-medium text-sm"
             >
-              Quero Aprender
+              Explorar habilidades
             </Link>
             <Link
               href="/cadastrar"
-              className="inline-flex items-center justify-center rounded-lg border border-white px-6 py-3 text-sm font-bold text-white hover:bg-white/10 transition"
+              className="text-[#B07D05] hover:underline text-sm font-medium"
             >
-              Sou Expert
+              Sou mentor →
             </Link>
+          </div>
+
+          {/* TRUST SIGNALS */}
+          <div className="mt-10 flex flex-wrap gap-6 justify-center items-center border-t border-white/10 pt-10">
+            <div className="flex items-center gap-2">
+              <Users className="w-4 h-4 text-[#B07D05]" />
+              <span className="text-sm text-gray-300">Mais de 2.000 aprendizes ativos</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <ShieldCheck className="w-4 h-4 text-[#B07D05]" />
+              <span className="text-sm text-gray-300">Mentores verificados</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Briefcase className="w-4 h-4 text-[#B07D05]" />
+              <span className="text-sm text-gray-300">Aprendizado em campo real</span>
+            </div>
           </div>
         </div>
       </section>

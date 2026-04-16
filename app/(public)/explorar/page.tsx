@@ -4,32 +4,26 @@ import { ExpertCard } from '@/components/expert-card'
 import { ExplorarFilters } from './filters'
 
 interface PageProps {
-  searchParams: { categoria?: string; tipo?: string; mundo?: string }
+  searchParams: { journey?: string; categoria?: string; tipo?: string }
 }
 
 export default async function ExplorarPage({ searchParams }: PageProps) {
   const supabase = createClient()
+  const journeyFilter = searchParams.journey ?? null
   const categoriaSlug = searchParams.categoria ?? null
   const tipoFilter = searchParams.tipo ?? null
-  const mundoFilter = searchParams.mundo ?? null
 
+  // All categories (for filter UI)
   const { data: categories } = await supabase
     .from('skill_categories')
     .select('id, name, slug, type, icon_name')
     .order('name')
 
-  // Filter by mundo (digital/physical) → get category IDs
-  let categoryIds: string[] | null = null
-  if (mundoFilter) {
-    categoryIds = (categories ?? [])
-      .filter((c) => c.type === mundoFilter)
-      .map((c) => c.id)
-  }
-
-  // Filter by categoria slug → get skill IDs → get expert IDs
+  // Step 1: Determine which experts to show based on journey + categoria
   let filteredExpertIds: string[] | null = null
 
   if (categoriaSlug) {
+    // Specific category → get skills → get expert IDs
     const { data: catSkills } = await supabase
       .from('skills')
       .select('id, skill_categories!inner(slug)')
@@ -45,25 +39,31 @@ export default async function ExplorarPage({ searchParams }: PageProps) {
     } else {
       filteredExpertIds = []
     }
-  } else if (mundoFilter && categoryIds) {
-    // Filter by mundo → get skills in those categories → expert IDs
-    const { data: worldSkills } = await supabase
-      .from('skills')
-      .select('id')
-      .in('category_id', categoryIds)
+  } else if (journeyFilter) {
+    // Journey filter → get categories of that type → skills → expert IDs
+    const journeyCategories = (categories ?? []).filter((c) => c.type === journeyFilter)
+    const catIds = journeyCategories.map((c) => c.id)
 
-    const skillIds = (worldSkills ?? []).map((s) => s.id)
-    if (skillIds.length > 0) {
-      const { data: rows } = await supabase
-        .from('expert_skills')
-        .select('expert_id')
-        .in('skill_id', skillIds)
-      filteredExpertIds = Array.from(new Set((rows ?? []).map((r) => r.expert_id)))
-    } else {
-      filteredExpertIds = []
+    if (catIds.length > 0) {
+      const { data: worldSkills } = await supabase
+        .from('skills')
+        .select('id')
+        .in('category_id', catIds)
+
+      const skillIds = (worldSkills ?? []).map((s) => s.id)
+      if (skillIds.length > 0) {
+        const { data: rows } = await supabase
+          .from('expert_skills')
+          .select('expert_id')
+          .in('skill_id', skillIds)
+        filteredExpertIds = Array.from(new Set((rows ?? []).map((r) => r.expert_id)))
+      } else {
+        filteredExpertIds = []
+      }
     }
   }
 
+  // Step 2: Fetch experts
   let expertQuery = supabase
     .from('expert_profiles')
     .select(`id, headline, rating_avg, sessions_count, user_id, profiles!inner(full_name, avatar_url, is_verified)`)
@@ -72,7 +72,7 @@ export default async function ExplorarPage({ searchParams }: PageProps) {
 
   if (filteredExpertIds !== null) {
     if (filteredExpertIds.length === 0) {
-      return renderPage([], categories ?? [], 0, categoriaSlug, tipoFilter, mundoFilter)
+      return renderPage([], categories ?? [], 0, journeyFilter, categoriaSlug, tipoFilter)
     }
     expertQuery = expertQuery.in('id', filteredExpertIds)
   }
@@ -80,6 +80,7 @@ export default async function ExplorarPage({ searchParams }: PageProps) {
   const { data: expertRows } = await expertQuery
   const expertIds = (expertRows ?? []).map((e) => e.id)
 
+  // Step 3: Fetch offers (with optional tipo filter)
   let offersQuery = supabase
     .from('offers')
     .select('expert_id, base_price, offer_type')
@@ -92,11 +93,13 @@ export default async function ExplorarPage({ searchParams }: PageProps) {
 
   const { data: offerRows } = await offersQuery
 
+  // Step 4: Fetch skills
   const { data: skillRows } = await supabase
     .from('expert_skills')
     .select('expert_id, skills(name, skill_categories(type))')
     .in('expert_id', expertIds)
 
+  // Step 5: Build expert list
   let experts = (expertRows ?? []).map((e) => {
     const profile = e.profiles as any
     const expertOffers = (offerRows ?? []).filter((o) => o.expert_id === e.id)
@@ -120,19 +123,23 @@ export default async function ExplorarPage({ searchParams }: PageProps) {
 
   if (tipoFilter) experts = experts.filter((e) => e.hasOffers)
 
-  return renderPage(experts, categories ?? [], experts.length, categoriaSlug, tipoFilter, mundoFilter)
+  return renderPage(experts, categories ?? [], experts.length, journeyFilter, categoriaSlug, tipoFilter)
 }
 
 function renderPage(
   experts: any[], categories: any[], count: number,
-  categoriaSlug: string | null, tipoFilter: string | null, mundoFilter: string | null
+  journeyFilter: string | null, categoriaSlug: string | null, tipoFilter: string | null
 ) {
+  const journeyLabel = journeyFilter === 'digital' ? 'Digital' : journeyFilter === 'physical' ? 'Presencial' : null
+
   return (
     <div className="min-h-screen bg-[#F7F8FC]">
       {/* Header */}
       <div className="bg-white border-b border-gray-100 py-6 px-4">
         <div className="max-w-6xl mx-auto">
-          <h1 className="text-2xl font-bold text-[#263238]">Descobrir Mestres</h1>
+          <h1 className="text-2xl font-bold text-[#263238]">
+            Descobrir Mestres{journeyLabel ? ` · ${journeyLabel}` : ''}
+          </h1>
           <p className="text-sm text-gray-500 mt-1">
             Conecte-se com profissionais verificados para elevar o nível dos seus projetos.
             {count > 0 && <span className="font-medium"> {count} encontrados.</span>}
@@ -140,12 +147,12 @@ function renderPage(
         </div>
       </div>
 
-      {/* Filters */}
+      {/* 3-level filters */}
       <ExplorarFilters
         categories={categories}
+        activeJourney={journeyFilter}
         activeCategoria={categoriaSlug}
         activeTipo={tipoFilter}
-        activeMundo={mundoFilter}
       />
 
       {/* Grid */}

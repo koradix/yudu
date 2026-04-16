@@ -44,9 +44,11 @@ interface CategoryNavProps {
   categories: Category[]
   selectedSlug?: string | null
   onSelect: (slug: string | null) => void
+  activeColor?: string
 }
 
-export function CategoryNav({ categories, selectedSlug, onSelect }: CategoryNavProps) {
+export function CategoryNav({ categories, selectedSlug, onSelect, activeColor }: CategoryNavProps) {
+  const activeBg = activeColor ?? '#263238'
   return (
     <div
       className="flex gap-2 overflow-x-auto pb-2"
@@ -63,14 +65,13 @@ export function CategoryNav({ categories, selectedSlug, onSelect }: CategoryNavP
         <div
           className={cn(
             'flex items-center justify-center h-10 w-10 rounded-full transition',
-            !selectedSlug
-              ? 'bg-[#16213E] text-white'
-              : 'bg-gray-100 text-[#16213E]'
+            !selectedSlug ? 'text-white' : 'bg-gray-100 text-gray-600'
           )}
+          style={!selectedSlug ? { backgroundColor: activeBg } : undefined}
         >
           <LayoutGrid className="h-5 w-5" />
         </div>
-        <span className="text-[11px] font-medium text-[#16213E] text-center leading-tight">
+        <span className="text-[11px] font-medium text-[#263238] text-center leading-tight">
           Todos
         </span>
       </button>
@@ -91,15 +92,16 @@ export function CategoryNav({ categories, selectedSlug, onSelect }: CategoryNavP
               className={cn(
                 'flex items-center justify-center h-10 w-10 rounded-full transition',
                 active
-                  ? 'bg-[#16213E] text-white'
+                  ? 'text-white'
                   : cat.type === 'digital'
                     ? 'bg-purple-100 text-purple-700'
                     : 'bg-teal-100 text-teal-700'
               )}
+              style={active ? { backgroundColor: activeBg } : undefined}
             >
               <Icon className="h-5 w-5" />
             </div>
-            <span className="text-[11px] font-medium text-[#16213E] text-center leading-tight line-clamp-2">
+            <span className="text-[11px] font-medium text-[#263238] text-center leading-tight line-clamp-2">
               {cat.name}
             </span>
           </button>

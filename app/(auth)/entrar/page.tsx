@@ -19,10 +19,24 @@ export default function EntrarPage() {
     e.preventDefault()
     setErro('')
     setLoading(true)
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password })
     setLoading(false)
-    if (error) { setErro('E-mail ou senha incorretos'); return }
-    router.push('/auth/callback')
+    if (error || !data.user) { setErro('E-mail ou senha incorretos'); return }
+
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', data.user.id)
+      .single()
+
+    const redirectMap: Record<string, string> = {
+      learner: '/aprendiz/inicio',
+      expert: '/expert/inicio',
+      client: '/cliente/inicio',
+      admin: '/admin',
+    }
+    const role = profile?.role ?? 'learner'
+    router.push(redirectMap[role])
   }
 
   async function handleReset() {

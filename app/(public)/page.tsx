@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { CheckCircle, Users, MapPin } from 'lucide-react'
+import { CheckCircle, Users, MapPin, GraduationCap, Briefcase, Building2 } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { ExpertCard } from '@/components/expert-card'
 import { DynamicWord } from '@/components/dynamic-word'
@@ -84,10 +84,26 @@ export default async function HomePage() {
             </span>
           </div>
 
-          <div className="mt-6">
-            <Link href="/cadastrar" className="text-tertiary hover:underline text-sm font-bold font-headline">
-              Sou expert →
-            </Link>
+          {/* Persona Cards */}
+          <div className="mt-12">
+            <p className="text-sm font-bold text-on-surface-variant mb-4 font-headline uppercase tracking-wider">Você é...</p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <Link href="/para-aprendizes" className="bg-surface-container-lowest border-2 border-tertiary hover:bg-tertiary-fixed/20 rounded-2xl p-6 text-center transition-all group">
+                <GraduationCap className="w-10 h-10 mx-auto mb-3 text-tertiary" />
+                <p className="font-bold text-lg text-on-surface">Quero aprender fazendo</p>
+                <p className="text-sm text-on-surface-variant mt-1">Habilidades práticas com experts reais</p>
+              </Link>
+              <Link href="/para-experts" className="bg-surface-container-lowest border-2 border-on-surface hover:bg-surface-container-high rounded-2xl p-6 text-center transition-all group">
+                <Briefcase className="w-10 h-10 mx-auto mb-3 text-on-surface" />
+                <p className="font-bold text-lg text-on-surface">Quero ensinar e ganhar</p>
+                <p className="text-sm text-on-surface-variant mt-1">Monetize seu conhecimento prático</p>
+              </Link>
+              <Link href="/para-clientes" className="bg-surface-container-lowest border-2 border-primary hover:bg-primary-fixed/20 rounded-2xl p-6 text-center transition-all group">
+                <Building2 className="w-10 h-10 mx-auto mb-3 text-primary" />
+                <p className="font-bold text-lg text-on-surface">Quero contratar verificado</p>
+                <p className="text-sm text-on-surface-variant mt-1">Experts avaliados em campo real</p>
+              </Link>
+            </div>
           </div>
         </div>
       </section>

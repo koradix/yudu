@@ -255,7 +255,7 @@ export default async function ExpertProfilePage({ params }: PageProps) {
 
                       {review.comment && (
                         <p className="text-sm text-on-surface-variant font-medium leading-relaxed italic">
-                          "{review.comment}"
+                          &ldquo;{review.comment}&rdquo;
                         </p>
                       )}
                     </div>

@@ -88,97 +88,168 @@ export default function CadastrarPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F7F8FC] flex items-center justify-center p-4">
-      <div className="bg-white w-full max-w-md rounded-xl shadow-md p-8">
-        <h1 className="text-3xl font-bold text-[#16213E] text-center mb-2">YUDU</h1>
-        <p className="text-center text-gray-500 mb-6 text-sm">Crie sua conta</p>
+    <div className="min-h-[100dvh] bg-surface-container-low flex items-center justify-center p-6">
+      <div className="bg-surface-container-lowest w-full max-w-md rounded-[2.5rem] p-10 md:p-12 editorial-shadow bento-card border border-outline-variant/10">
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-black font-headline text-primary tracking-tighter italic leading-none mb-3">
+            YUDU
+          </h1>
+          <p className="text-sm font-bold uppercase tracking-widest text-on-surface-variant font-label">
+            Inicie sua Jornada
+          </p>
+        </div>
 
         {sucesso ? (
-          <div className="text-center text-green-700 bg-green-50 rounded-lg p-4">
-            Conta criada! Verifique seu e-mail para confirmar o cadastro.
+          <div className="text-center text-primary bg-primary-fixed/30 rounded-2xl p-6 editorial-shadow font-medium animate-in fade-in zoom-in duration-500">
+            <span className="material-symbols-outlined text-4xl mb-4 block" style={{ fontVariationSettings: "'FILL' 1" }}>
+              check_circle
+            </span>
+            <p className="text-lg font-black font-headline tracking-tighter mb-2">Conta criada com sucesso!</p>
+            <p className="text-sm font-medium">Verifique seu e-mail para confirmar seu ingresso na oficina.</p>
           </div>
         ) : step === 1 ? (
-          <div className="flex flex-col gap-3">
-            <p className="text-sm text-gray-600 text-center mb-2">Escolha seu perfil</p>
-            {roles.map((role) => (
-              <button
-                key={role.value}
-                onClick={() => selectRole(role.value)}
-                className={`flex items-center gap-4 w-full rounded-lg border-2 p-4 text-left transition hover:shadow-md ${
-                  selectedRole === role.value ? role.color : 'border-gray-200'
-                }`}
-              >
-                <role.icon className="h-8 w-8 text-[#16213E] shrink-0" />
-                <div>
-                  <p className="font-semibold text-[#16213E]">{role.label}</p>
-                  <p className="text-sm text-gray-500">{role.description}</p>
-                </div>
-              </button>
-            ))}
-            <p className="text-center text-sm text-gray-500 mt-4">
+          <div className="flex flex-col gap-4 animate-in fade-in slide-in-from-bottom-2 duration-500">
+            <p className="text-xs font-bold uppercase tracking-widest text-on-surface-variant text-center mb-2">Seu papel na oficina</p>
+            
+            <button
+              onClick={() => selectRole('learner')}
+              className={`group flex items-center gap-5 w-full rounded-2xl border-2 p-5 text-left transition-all duration-300 ${
+                selectedRole === 'learner' 
+                  ? 'border-primary bg-primary-fixed/20 shadow-lg scale-[1.02]' 
+                  : 'border-outline-variant/30 hover:bg-surface-container-low'
+              }`}
+            >
+              <div className="h-14 w-14 rounded-full bg-primary-fixed/30 flex items-center justify-center shrink-0">
+                <span className="material-symbols-outlined text-primary text-3xl">school</span>
+              </div>
+              <div>
+                <p className="font-black font-headline text-on-surface tracking-tighter leading-none italic">Quero Aprender</p>
+                <p className="text-[11px] font-medium text-on-surface-variant leading-tight mt-1.5">Habilidades práticas com experts reais</p>
+              </div>
+            </button>
+
+            <button
+              onClick={() => selectRole('expert')}
+              className={`group flex items-center gap-5 w-full rounded-2xl border-2 p-5 text-left transition-all duration-300 ${
+                selectedRole === 'expert' 
+                  ? 'border-secondary bg-secondary-fixed/20 shadow-lg scale-[1.02]' 
+                  : 'border-outline-variant/30 hover:bg-surface-container-low'
+              }`}
+            >
+              <div className="h-14 w-14 rounded-full bg-secondary-fixed/30 flex items-center justify-center shrink-0">
+                <span className="material-symbols-outlined text-secondary text-3xl">workspace_premium</span>
+              </div>
+              <div>
+                <p className="font-black font-headline text-on-surface tracking-tighter leading-none italic">Sou Expert</p>
+                <p className="text-[11px] font-medium text-on-surface-variant leading-tight mt-1.5">Ensine seu ofício e monetize seu mestre</p>
+              </div>
+            </button>
+
+            <button
+              onClick={() => selectRole('client')}
+              className={`group flex items-center gap-5 w-full rounded-2xl border-2 p-5 text-left transition-all duration-300 ${
+                selectedRole === 'client' 
+                  ? 'border-tertiary bg-tertiary-fixed/20 shadow-lg scale-[1.02]' 
+                  : 'border-outline-variant/30 hover:bg-surface-container-low'
+              }`}
+            >
+              <div className="h-14 w-14 rounded-full bg-tertiary-fixed/30 flex items-center justify-center shrink-0">
+                <span className="material-symbols-outlined text-tertiary text-3xl">business_center</span>
+              </div>
+              <div>
+                <p className="font-black font-headline text-on-surface tracking-tighter leading-none italic">Quero Contratar</p>
+                <p className="text-[11px] font-medium text-on-surface-variant leading-tight mt-1.5">Serviços executados com mestria</p>
+              </div>
+            </button>
+
+            <p className="text-center text-xs font-medium text-on-surface-variant mt-6">
               Já tem conta?{' '}
-              <a href="/entrar" className="text-[#16213E] font-semibold hover:underline">
-                Entrar
-              </a>
+              <a href="/entrar" className="text-primary font-black font-headline hover:underline ml-1 leading-none italic">Entrar</a>
             </p>
           </div>
         ) : (
-          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5 animate-in fade-in slide-in-from-right-4 duration-500">
             <button
               type="button"
               onClick={() => setStep(1)}
-              className="flex items-center gap-1 text-sm text-gray-500 hover:text-gray-700 w-fit"
+              className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors mb-2"
             >
-              <ArrowLeft className="h-4 w-4" /> Voltar
+              <span className="material-symbols-outlined text-sm">arrow_back</span> 
+              Voltar aos Perfis
             </button>
 
-            <div>
-              <Label>Nome completo</Label>
-              <Input {...register('full_name')} placeholder="Seu nome" className="mt-1" />
+            <div className="space-y-1.5">
+              <Label className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant ml-1">Nome Completo</Label>
+              <Input 
+                {...register('full_name')} 
+                placeholder="Como quer ser chamado?" 
+                className="bg-surface-container-low border-none rounded-2xl p-6 h-12"
+              />
               {errors.full_name && (
-                <p className="text-red-500 text-xs mt-1">{errors.full_name.message}</p>
+                <p className="text-error text-[10px] font-bold ml-1">{errors.full_name.message}</p>
               )}
             </div>
 
-            <div>
-              <Label>E-mail</Label>
-              <Input {...register('email')} type="email" placeholder="seu@email.com" className="mt-1" />
+            <div className="space-y-1.5">
+              <Label className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant ml-1">E-mail</Label>
+              <Input 
+                {...register('email')} 
+                type="email" 
+                placeholder="seu@oficio.com" 
+                className="bg-surface-container-low border-none rounded-2xl p-6 h-12"
+              />
               {errors.email && (
-                <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
+                <p className="text-error text-[10px] font-bold ml-1">{errors.email.message}</p>
               )}
             </div>
 
-            <div>
-              <Label>Senha</Label>
-              <Input {...register('password')} type="password" placeholder="Mínimo 8 caracteres" className="mt-1" />
-              {errors.password && (
-                <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>
-              )}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-1.5">
+                <Label className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant ml-1">Senha</Label>
+                <Input 
+                  {...register('password')} 
+                  type="password" 
+                  placeholder="8+ chars" 
+                  className="bg-surface-container-low border-none rounded-2xl p-6 h-12"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <Label className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant ml-1">Repetir</Label>
+                <Input 
+                  {...register('confirmPassword')} 
+                  type="password" 
+                  placeholder="Confirme" 
+                  className="bg-surface-container-low border-none rounded-2xl p-6 h-12"
+                />
+              </div>
             </div>
+            {(errors.password || errors.confirmPassword) && (
+              <p className="text-error text-[10px] font-bold ml-1 -mt-2">
+                {errors.password?.message || errors.confirmPassword?.message}
+              </p>
+            )}
 
-            <div>
-              <Label>Confirmar senha</Label>
-              <Input {...register('confirmPassword')} type="password" placeholder="Repita a senha" className="mt-1" />
-              {errors.confirmPassword && (
-                <p className="text-red-500 text-xs mt-1">{errors.confirmPassword.message}</p>
-              )}
-            </div>
+            {erro && (
+              <p className="text-error text-xs font-bold text-center bg-error-container/20 py-2 rounded-lg border border-error/10">
+                {erro}
+              </p>
+            )}
 
-            {erro && <p className="text-red-500 text-sm text-center">{erro}</p>}
-
-            <Button
-              type="submit"
+            <button 
+              type="submit" 
               disabled={isSubmitting}
-              className="w-full bg-[#F5A623] hover:bg-[#e0951c] text-[#16213E] font-semibold"
+              className="w-full bg-primary hover:bg-surface-tint text-white h-14 rounded-2xl font-black font-headline uppercase tracking-[0.2em] transition-all duration-300 editorial-shadow hover:scale-[1.02] mt-2 flex items-center justify-center gap-2"
             >
-              {isSubmitting ? 'Criando conta...' : 'Criar minha conta'}
-            </Button>
+              {isSubmitting ? (
+                <span className="animate-pulse">Criando Oficina...</span>
+              ) : (
+                'Iniciar Minha Jornada'
+              )}
+            </button>
 
-            <p className="text-center text-sm text-gray-500">
-              Já tem conta?{' '}
-              <a href="/entrar" className="text-[#16213E] font-semibold hover:underline">
-                Entrar
-              </a>
+            <p className="text-center text-[11px] font-medium text-on-surface-variant mt-4 leading-relaxed">
+              Ao se cadastrar, você concorda com os <br />
+              <a href="#" className="font-bold border-b border-on-surface-variant/20">Termos da Oficina</a> e <a href="#" className="font-bold border-b border-on-surface-variant/20">Ética do Mestre</a>.
             </p>
           </form>
         )}

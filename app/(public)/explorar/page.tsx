@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { ExpertCard } from '@/components/expert-card'
 import { ExplorarFilters } from './filters'
